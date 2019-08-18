@@ -1,14 +1,14 @@
 const Article = require('../models/Article')
 
-
-
 class ArticleController{
 
 
     static create(req, res, next){
 
-        const {title,content} = req.body
-        Article.create({title,content})
+        // console.log(req.body,"masuk article controller")
+        let UserId = req.decode.id
+        const {title,content,featured_image} = req.body
+        Article.create({UserId,title,content,featured_image})
         .then(success=>{
             res.status(201).json(success)
         })
@@ -17,7 +17,7 @@ class ArticleController{
 
     static delete(req, res, next){
 
-        const id = req.body.id
+        const id = req.params.id
         
         Article.findByIdAndDelete(id)
         .then(success=>{
@@ -42,10 +42,22 @@ class ArticleController{
     }
 
     static getAll(req, res, next){
+        
 
         Article.find()
         .then(allArticle=>{
             res.status(200).json(allArticle)
+        })
+        .catch(next)
+    }
+
+    static getAllUserArticle(req, res, next){
+
+        let UserId = req.decode.id
+
+        Article.find({UserId})
+        .then(allUserArticle=>{
+            res.status(200).json(allUserArticle)
         })
         .catch(next)
     }

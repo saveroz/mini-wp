@@ -1,22 +1,40 @@
-const {verifyToken} = require('../helpers/generateToken')
+const jwt = require('jsonwebtoken')
+const Secret=process.env.SECRET
+const User = require('../models/User')
 
-function authentication(req,res,next){
-
-    
+function authentication(req,res,next){    
     try {
-        const {accessToken} = req.body
-        console.log(accessToken)
-        const decode = verifyToken(accessToken)
-        
+        console.log("authentication")
+        // console.log(process.env.SECRET)
+        // console.log(req.headers.token)
+        const token = req.headers.token
+        const decode = jwt.verify(token, Secret)
+        // console.log(decode)
         req.decode = decode
-        // console.log('masuk ke decode')
-        next()
+        let id = req.decode.id
+        console.log(id)
+
+        User.findById(id)
+        .then(user=>{
+            
+            if(user){
+                console.log("masuk ke user")
+                next()
+            }
+            else{
+                res.status(401).json({
+                    message : 'You are not authenticated Users'
+                })
+            }
+        }).catch(err=>{
+            console.log(err)
+        })
+        
     }
     catch{
-        console.log(req.headers.token)
-        res.status(403).json({
-            login : 'login failed',
-            msg:req.headers.token
+        // console.log(req.headers.token)
+        res.status(401).json({
+            message: 'You are not authenticated User'
         })
        
     }
