@@ -184,7 +184,7 @@ export default {
       let token = localStorage.getItem("token")
       // console.log(token)
       axios({
-        url: "http://localhost:3000/articles",
+        url: "http://34.87.39.22/articles",
         method: "GET",
         headers: {
           token

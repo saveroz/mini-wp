@@ -60,7 +60,7 @@ export default {
           
     
        return axios({
-        url: `http://localhost:3000/articles/${id}`,
+        url: `http://34.87.39.22/articles/${id}`,
         method: "DELETE",
         headers: {
           token

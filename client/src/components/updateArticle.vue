@@ -72,7 +72,7 @@ export default {
             Swal.showLoading()
 
       axios({
-        url: `http://localhost:3000/articles/${id}`,
+        url: `http://34.87.39.22/articles/${id}`,
         method: "PATCH",
         data: bodyFormData,
         headers: {

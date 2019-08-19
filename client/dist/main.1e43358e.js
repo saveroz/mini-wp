@@ -48777,7 +48777,7 @@ var _default = {
       });
       Swal.showLoading();
       (0, _axios.default)({
-        url: "http://localhost:3000/articles/".concat(id),
+        url: "http://34.87.39.22/articles/".concat(id),
         method: "PATCH",
         data: bodyFormData,
         headers: {
@@ -49040,7 +49040,7 @@ var _default = {
       }).then(function (result) {
         if (result.value) {
           return (0, _axios.default)({
-            url: "http://localhost:3000/articles/".concat(id),
+            url: "http://34.87.39.22/articles/".concat(id),
             method: "DELETE",
             headers: {
               token: token
@@ -49729,7 +49729,7 @@ var _default = {
       console.log(idToken);
       (0, _axios.default)({
         method: "POST",
-        url: "http://localhost:3000/users/signIn",
+        url: "http://34.87.39.22/users/signIn",
         data: {
           idToken: idToken
         }
@@ -49753,7 +49753,7 @@ var _default = {
       var password = this.inputPassword;
       (0, _axios.default)({
         method: "POST",
-        url: "http://localhost:3000/users/login",
+        url: "http://34.87.39.22/users/login",
         data: {
           email: email,
           password: password
@@ -50031,7 +50031,7 @@ var _default = {
       var email = this.email;
       var password = this.password;
       (0, _axios.default)({
-        url: "http://localhost:3000/users/register",
+        url: "http://34.87.39.22/users/register",
         method: 'POST',
         data: {
           username: username,
@@ -50321,7 +50321,7 @@ var _default = {
       });
       Swal.showLoading();
       (0, _axios.default)({
-        url: "http://localhost:3000/articles",
+        url: "http://34.87.39.22/articles",
         method: "POST",
         data: bodyFormData,
         headers: {
@@ -50800,7 +50800,7 @@ var _default = {
       var token = localStorage.getItem("token"); // console.log(token)
 
       (0, _axios.default)({
-        url: "http://localhost:3000/articles",
+        url: "http://34.87.39.22/articles",
         method: "GET",
         headers: {
           token: token
@@ -54154,7 +54154,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33939" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36111" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
