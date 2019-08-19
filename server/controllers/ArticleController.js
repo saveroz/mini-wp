@@ -7,7 +7,8 @@ class ArticleController{
 
         // console.log(req.body,"masuk article controller")
         let UserId = req.decode.id
-        const {title,content,featured_image} = req.body
+        let featured_image = req.file.cloudStoragePublicUrl
+        const {title,content} = req.body
         Article.create({UserId,title,content,featured_image})
         .then(success=>{
             res.status(201).json(success)

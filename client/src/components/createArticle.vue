@@ -43,34 +43,24 @@ export default {
       let image = this.articleImage;
       let featured_image = "";
       let token = localStorage.getItem("token");
-    //   console.log(title, content);
       var bodyFormData = new FormData();
       bodyFormData.append("image", image);
+      bodyFormData.append("title", title);
+      bodyFormData.append("content", content);
+      
       // console.log(bodyFormData)
       Swal.fire({
                 title: 'Creating your article...',
                 allowOutsideClick: () => !Swal.isLoading()
       })
       Swal.showLoading()
-
       axios({
-          url : "http://localhost:3000/images/upload",
-          method : "POST",
-          data : bodyFormData
-      })
-      .then(response=>{
-          console.log(response.data)
-          featured_image = response.data.link
-          return axios({
             url : "http://localhost:3000/articles",
             method : "POST",
-            data : {
-                title,content,featured_image
-            },
+            data : bodyFormData,
             headers : {
                 token
             }
-        })
       })
       .then(response=>{
             console.log(response)

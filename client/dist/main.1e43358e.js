@@ -50307,10 +50307,11 @@ var _default = {
       var content = this.articleContent;
       var image = this.articleImage;
       var featured_image = "";
-      var token = localStorage.getItem("token"); //   console.log(title, content);
-
+      var token = localStorage.getItem("token");
       var bodyFormData = new FormData();
-      bodyFormData.append("image", image); // console.log(bodyFormData)
+      bodyFormData.append("image", image);
+      bodyFormData.append("title", title);
+      bodyFormData.append("content", content); // console.log(bodyFormData)
 
       Swal.fire({
         title: 'Creating your article...',
@@ -50320,24 +50321,12 @@ var _default = {
       });
       Swal.showLoading();
       (0, _axios.default)({
-        url: "http://localhost:3000/images/upload",
+        url: "http://localhost:3000/articles",
         method: "POST",
-        data: bodyFormData
-      }).then(function (response) {
-        console.log(response.data);
-        featured_image = response.data.link;
-        return (0, _axios.default)({
-          url: "http://localhost:3000/articles",
-          method: "POST",
-          data: {
-            title: title,
-            content: content,
-            featured_image: featured_image
-          },
-          headers: {
-            token: token
-          }
-        });
+        data: bodyFormData,
+        headers: {
+          token: token
+        }
       }).then(function (response) {
         console.log(response);
         _this.articleTitle = "";
@@ -54165,7 +54154,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41779" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39239" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
