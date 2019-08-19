@@ -49003,6 +49003,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   props: {
     article: Object,
@@ -49015,20 +49027,33 @@ var _default = {
     removeArticle: function removeArticle(id) {
       var _this = this;
 
-      var token = localStorage.getItem('token');
+      var token = localStorage.getItem("token");
       console.log(id);
-      (0, _axios.default)({
-        url: "http://localhost:3000/articles/".concat(id),
-        method: 'DELETE',
-        headers: {
-          token: token
-        }
-      }).then(function (response) {
-        console.log(response);
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(function (result) {
+        if (result.value) {
+          return (0, _axios.default)({
+            url: "http://localhost:3000/articles/".concat(id),
+            method: "DELETE",
+            headers: {
+              token: token
+            }
+          }).then(function (response) {
+            console.log(response);
+            Swal.fire("Deleted!", "Your file has been deleted.", "success");
 
-        _this.$emit("removedArticle", id);
-      }).catch(function (err) {
-        console.log(err);
+            _this.$emit("removedArticle", id);
+          }).catch(function (err) {
+            console.log(err);
+          });
+        }
       });
     },
     editArticle: function editArticle(obj) {
@@ -49057,7 +49082,7 @@ exports.default = _default;
     _c(
       "div",
       {
-        staticClass: "card border-secondary mb-3 ",
+        staticClass: "card border-secondary mb-3",
         staticStyle: {
           display: "flex",
           "flex-direction": "row",
@@ -49078,7 +49103,7 @@ exports.default = _default;
           }),
           _vm._v(" "),
           _c("p", { staticStyle: { "font-size": "14px" } }, [
-            _vm._v(" Author : " + _vm._s(_vm.article.UserId.username))
+            _vm._v("Author : " + _vm._s(_vm.article.UserId.username))
           ]),
           _vm._v(" "),
           _c("p", { staticClass: "card-text" }, [
@@ -49120,7 +49145,7 @@ exports.default = _default;
                     }
                   }
                 },
-                [_vm._v("edit ")]
+                [_vm._v("edit")]
               )
             : _vm._e(),
           _vm._v(" "),
@@ -50288,7 +50313,7 @@ var _default = {
       bodyFormData.append("image", image); // console.log(bodyFormData)
 
       Swal.fire({
-        title: 'Updating your article...',
+        title: 'Creating your article...',
         allowOutsideClick: function allowOutsideClick() {
           return !Swal.isLoading();
         }
@@ -50678,6 +50703,7 @@ var _default = {
       this.allArticles = this.allArticles.filter(function (article) {
         article._id !== id;
       });
+      this.getAllArticles();
     },
     detailedArticle: function detailedArticle(obj) {
       console.log("masuk ke detail");
@@ -54139,7 +54165,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37589" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41779" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -48,7 +48,7 @@ export default {
       bodyFormData.append("image", image);
       // console.log(bodyFormData)
       Swal.fire({
-                title: 'Updating your article...',
+                title: 'Creating your article...',
                 allowOutsideClick: () => !Swal.isLoading()
       })
       Swal.showLoading()

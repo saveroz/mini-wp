@@ -87,6 +87,7 @@ export default {
       this.allArticles = this.allArticles.filter(article => {
         article._id !== id;
       });
+      this.getAllArticles()
     },
     detailedArticle(obj) {
       console.log("masuk ke detail");
