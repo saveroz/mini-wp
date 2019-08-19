@@ -3,13 +3,14 @@ const router = express.Router()
 const ArticleController = require('../controllers/ArticleController')
 const authentication = require('../middleware/authentication')
 const authorization = require('../middleware/authorization')
+const {sendUploadToGCS,multer} = require('../helpers/images')
 
 router.use(authentication)
 router.get('/', ArticleController.getAll)
 router.get('/user', ArticleController.getAllUserArticle)
 router.post('/', ArticleController.create)
 router.delete('/:id',authorization,ArticleController.delete)
-router.patch('/',authorization,ArticleController.update)
+router.patch('/:id',authorization,multer.single('image'),sendUploadToGCS,ArticleController.update)
 
 
 

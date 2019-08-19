@@ -7,6 +7,7 @@ router.get('/', function(req, res, next){
 })
 
 router.post('/',UserController.login)
+router.post('/signIn',UserController.signIn)
 router.post('/register', UserController.create)
 
 

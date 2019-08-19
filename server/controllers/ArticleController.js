@@ -28,9 +28,10 @@ class ArticleController{
 
     static update(req, res, next){
 
-        let id = req.body.id
+        let id = req.params.id
         let updatedData = {}
-
+        
+        req.file.cloudStoragePublicUrl && (updatedData.featured_image=req.file.cloudStoragePublicUrl)
         req.body.title && (updatedData.title =req.body.title)
         req.body.content && (updatedData.content =req.body.content)
 
@@ -44,8 +45,9 @@ class ArticleController{
     static getAll(req, res, next){
         
 
-        Article.find()
+        Article.find().populate("UserId")
         .then(allArticle=>{
+            console.log("masuk ke get all article")
             res.status(200).json(allArticle)
         })
         .catch(next)

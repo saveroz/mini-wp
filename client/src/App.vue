@@ -1,90 +1,210 @@
 <template>
   <div>
-      <navbar v-bind:isLogin="isLogin" @fromLogOutButton="loginCondition" @fromChildren="triggerParent" :message="message"></navbar>
-      <login v-if="!isLogin&&isLoginForm" @fromLoginFormLoginCond="loginCondition" @fromLoginFormRegisterCond="loginFormCondition"></login>
-      <register v-if="!isLogin&&!isLoginForm" @fromRegisterForm="loginFormCondition" ></register>
-      <articleList v-if="isLogin" :allArticles="allArticles"></articleList>
+    <navbar
+      v-bind:isLogin="isLogin"
+      @fromLogOutButton="loginCondition"
+      @fromChildren="triggerParent"
+      @showPage="showPageToggle"
+      :message="message"
+    ></navbar>
+    <login
+      v-if="!isLogin&&isLoginForm"
+      @fromLoginFormLoginCond="loginCondition"
+      @fromLoginFormRegisterCond="loginFormCondition"
+    ></login>
+    <register v-if="!isLogin&&!isLoginForm" @fromRegisterForm="loginFormCondition"></register>
+    <articleList
+      v-if="isLogin"
+      @detailedArticle="detailedArticle($event)"
+      @editArticle="editArticle($event)"
+      @removedArticle="deleteArticle($event)"
+      v-bind:isShowArticle="isShowArticle"
+      v-bind:allArticles="allArticles"
+      v-bind:isUserArticle="isUserArticle"
+    ></articleList>
+    <createArticle
+      v-bind:isCreate="isCreate"
+      @addArticle="getAllArticles"
+      @showPage="showPageToggle"
+    ></createArticle>
+    <updateArticle
+      v-bind:articleToBeEdited="articleToBeEdited"
+      v-if="isEditArticle"
+      @showPage="showPageToggle"
+    ></updateArticle>
+    <detailedArticlePage v-bind:articleDetailObj="articleDetailObj" v-if="isDetailedArticle"></detailedArticlePage>
   </div>
 </template>
 
 
 <script>
-import articleList from "./components/articleList.vue"
+import updateArticle from "./components/updateArticle";
+import articleList from "./components/articleList.vue";
 import navbar from "./components/navbar.vue";
 import login from "./components/login.vue";
 import register from "./components/register";
-import axios from 'axios';
+import axios from "axios";
+import createArticle from "./components/createArticle";
+import detailedArticlePage from "./components/detailedArticle";
+// import Swal from "sweetalert2"
 
 export default {
   components: {
     navbar,
     login,
     register,
-    articleList
+    articleList,
+    createArticle,
+    updateArticle,
+    detailedArticlePage
   },
   data() {
     return {
+      isCreate: false,
+      isShowArticle: true,
       isLogin: false,
-      message: '',
+      isEditArticle: false,
+      isDetailedArticle: false,
+      articleDetailObj: {},
+      articleToBeEdited: {},
+      message: "",
+      isUserArticle: false,
       counter: 0,
-      allArticles : [],
-      userArticles : [],
+      allArticles: [],
       tempArticles: [],
-      isLoginForm : true,
+      isLoginForm: true
     };
   },
   methods: {
     triggerParent(number) {
-        this.counter += number
-        this.message = 'from parent' + this.counter
-  
+      this.counter += number;
+      this.message = "from parent" + this.counter;
     },
-    loginFormCondition(cond){
-        this.isLoginForm = cond
-
+    loginFormCondition(cond) {
+      this.isLoginForm = cond;
     },
-    loginCondition(cond){
-
-        let token = localStorage.getItem('token')
-        if (token){
-            this.isLogin = true
-        }
-        else{
-            if (cond){
-                this.isLogin = true
-            }
-            else {
-                this.isLogin = false
-            }
-        }
+    deleteArticle(id) {
+      this.allArticles = this.allArticles.filter(article => {
+        article._id !== id;
+      });
     },
-    userArticle() {
-        // this.allArticles = this.tempArticles.filter((el) => { return el._id == id user})
-    }
-    
-  },
-  created(){
+    detailedArticle(obj) {
+      console.log("masuk ke detail");
+      console.log(obj);
+      this.articleDetailObj = obj;
+      this.showPageToggle("detailedArticle");
+    },
+    editArticle(obj) {
+      // console.log(obj)
+      this.showPageToggle("editArticle");
+      this.articleToBeEdited = obj;
+      console.log(obj);
+    },
+    loginCondition(cond) {
+      let token = localStorage.getItem("token");
+      if (token) {
+        this.isLogin = true;
+        this.getAllArticles();
+      } 
       
-    this.loginCondition(null)
-    // console.log(this.isLogin)
+      else {
 
-    let token = localStorage.getItem('token')
-    axios({
-        url : "http://localhost:3000/articles",
-        method : "GET",
-        headers : {
-            token
+        if (cond) {
+          this.isLogin = true;
+          this.getAllArticles();
+        } 
+        else {
+          this.isLogin = false;
         }
-    }).
-    then(response=>{
-        console.log(response.data)
-        this.allArticles = response.data
-        this.tempArticles = response.data
-    })
-    .catch(err=>{
-        console.log(err)
-    })
-    
+      }
+    },
+    showPageToggle(page) {
+      if (page == "UserArticle") {
+        // console.log("masuk ke user article")
+        this.isShowArticle = true;
+        this.isUserArticle = true;
+        this.isCreate = false;
+        this.isEditArticle = false;
+        this.isDetailedArticle = false;
+        this.getUserArticles();
+      } 
+
+      else if (page == "AllArticle") {
+        console.log("masuk ke all article");
+        this.isShowArticle = true;
+        this.isUserArticle = false;
+        this.isCreate = false;
+        this.isEditArticle = false;
+        this.isDetailedArticle = false;
+        this.getAllArticles();
+      } 
+
+      else if (page == "createTodoForm") {
+        console.log("masuk ke create");
+        this.isShowArticle = false;
+        this.isCreate = true;
+        this.isEditArticle = false;
+        this.isDetailedArticle = false;
+      } 
+
+      else if (page == "editArticle") {
+        this.isShowArticle = false;
+        this.isUserArticle = false;
+        this.isCreate = false;
+        this.isEditArticle = true;
+        this.isDetailedArticle = false;
+      } 
+      
+      else if ((page = "detailedArticle")) {
+        console.log("masuk page");
+        this.isShowArticle = false;
+        this.isUserArticle = false;
+        this.isCreate = false;
+        this.isEditArticle = false;
+        this.isDetailedArticle = true;
+      }
+    },
+    getUserArticles() {
+      let author = localStorage.getItem("author");
+      console.log(author);
+      this.allArticles = [];
+      for (let article of this.tempArticles) {
+        if (article.UserId) {
+          if (article.UserId["_id"] == author) {
+            this.allArticles.push(article);
+          }
+        }
+      }
+    },
+    getAllArticles() {
+
+      // console.log("masuk ke get all");
+      localStorage.getItem("token")
+      let token = localStorage.getItem("token")
+      // console.log(token)
+      axios({
+        url: "http://localhost:3000/articles",
+        method: "GET",
+        headers: {
+          token
+        }
+      })
+        .then(response => {
+          console.log(response.data);
+          this.allArticles = response.data;
+          this.tempArticles = response.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  },
+  created() {
+    this.loginCondition(null);
+    if (localStorage.getItem("token")) {
+      this.getAllArticles();
+    }
+   
   }
 };
 </script>

@@ -53,10 +53,22 @@ export default {
                 } 
             })
             .then(response=>{
+                Swal.fire({
+                    type: 'success',
+                    title: 'Register success !',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
                 console.log(response)
             })
             .catch(err=>{
-                console.log(err)
+                let message = (err.response.data.message)
+                // swal("Error!", errMessage , "error")
+                Swal.fire({
+                    type: 'error',
+                    title: 'register failed !',
+                    text : message
+                })
             })
         }
     }

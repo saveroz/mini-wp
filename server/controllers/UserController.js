@@ -57,7 +57,8 @@ class UserController{
             }
             
             let token = jwt.sign(userdata,Secret)
-            res.json(token)       
+            let author = user._id
+            res.json({token,author})       
         })
         .catch(next)
         
@@ -85,7 +86,9 @@ class UserController{
                 }
                 console.log(Secret)
                 let token = jwt.sign(userdata,Secret)
-                res.status(200).json(token)       
+                let author = user._id
+                res.status(200).json({token,author})
+                // res.status(200).json(token)       
                 // res.status(200).json("you have success to login")
             }
             else{

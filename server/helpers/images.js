@@ -1,4 +1,4 @@
-require('dotenv').config()
+// require('dotenv').config()
 const urlToFileName = require('./urlToFileName')
 
 const { Storage } = require('@google-cloud/storage')
@@ -16,9 +16,15 @@ const getPublicUrl = (filename) => {
 }
 
 const sendUploadToGCS = (req, res, next) => {
-
+  console.log(req.file ,"masuk ke upload GCS")
   if (!req.file) {
     return next()
+  }
+  else if (!req.file.mimetype.includes('image')) {
+    throw({
+      status: 406,
+      message: "File type should be image"
+    })
   }
 
   const gcsname = Date.now() + req.file.originalname
@@ -66,8 +72,8 @@ async function deleteFile(req, res, next) {
 
 }
 
-const Multer = require('multer'),
-  multer = Multer({
+const Multer = require('multer')
+const multer = Multer({
     storage: Multer.MemoryStorage,
     limits: {
       fileSize: 5 * 1024 * 1024
