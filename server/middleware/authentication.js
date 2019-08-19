@@ -31,7 +31,7 @@ function authentication(req,res,next){
         })
         
     }
-    catch(error) {
+    catch{
         // console.log(req.headers.token)
         res.status(401).json({
             message: 'You are not authenticated User'
