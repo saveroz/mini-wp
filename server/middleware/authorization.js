@@ -5,6 +5,8 @@ function authorization(req,res,next){
     
     console.log('authorization')
     let id = req.params.id
+    console.log(req.decode.id)
+    console.log(req.params.id ,"id article")
     Article.findOne({
         '_id':id,
         'UserId': req.decode.id 
