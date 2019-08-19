@@ -49753,7 +49753,7 @@ var _default = {
       var password = this.inputPassword;
       (0, _axios.default)({
         method: "POST",
-        url: "http://localhost:3000/users",
+        url: "http://localhost:3000/users/login",
         data: {
           email: email,
           password: password
@@ -54154,7 +54154,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39239" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33939" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

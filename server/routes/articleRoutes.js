@@ -7,7 +7,6 @@ const {sendUploadToGCS,multer} = require('../helpers/images')
 
 router.use(authentication)
 router.get('/', ArticleController.getAll)
-router.get('/user', ArticleController.getAllUserArticle)
 router.post('/', multer.single('image'),sendUploadToGCS,ArticleController.create)
 router.delete('/:id',authorization,ArticleController.delete)
 router.patch('/:id',authorization,multer.single('image'),sendUploadToGCS,ArticleController.update)

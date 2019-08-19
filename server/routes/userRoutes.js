@@ -6,7 +6,7 @@ router.get('/', function(req, res, next){
     res.status(200).json("masuk ke user routes")
 })
 
-router.post('/',UserController.login)
+router.post('/login',UserController.login)
 router.post('/signIn',UserController.signIn)
 router.post('/register', UserController.create)
 

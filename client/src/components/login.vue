@@ -96,7 +96,7 @@ export default {
       let password = this.inputPassword;
       axios({
         method: "POST",
-        url: `http://localhost:3000/users`,
+        url: `http://localhost:3000/users/login`,
         data: {
           email,
           password
