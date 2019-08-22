@@ -10,9 +10,18 @@ const port = process.env.PORT || 3000
 const indexRoutes = require('./routes/indexRoutes')
 const errorHandler = require('./middleware/errorHandler')
 const serverUrl = require('./')
+const db_url = process.env.DB_URL
 
 app.use(cors())
-mongoose.connect('mongodb://localhost/MiniWp', {useNewUrlParser:true})
+
+mongoose.connect(db_url,{useNewUrlParser : true})
+.then(function(){
+    console.log('db connected')
+})
+.catch(function () {
+    console.log('fail to connect')
+})
+// mongoose.connect('mongodb://localhost/MiniWp', {useNewUrlParser:true})
 
 app.use(express.urlencoded({extended:false})) 
 app.use(express.json())

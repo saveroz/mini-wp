@@ -49015,6 +49015,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   props: {
     article: Object,
@@ -49078,104 +49102,95 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      {
-        staticClass: "card border-secondary mb-3",
-        staticStyle: {
-          display: "flex",
-          "flex-direction": "row",
-          height: "250px",
-          "border-width": "3px"
-        }
-      },
-      [
-        _c("div", { staticClass: "card-body", staticStyle: { width: "50%" } }, [
-          _c("h4", { staticClass: "card-title" }, [
-            _vm._v(_vm._s(_vm.article.title))
-          ]),
-          _vm._v(" "),
-          _c("p", {
-            staticClass: "card-text line-clamp",
-            staticStyle: { overflow: "hidden" },
-            domProps: { innerHTML: _vm._s(_vm.article.content) }
-          }),
-          _vm._v(" "),
-          _c("p", { staticStyle: { "font-size": "14px" } }, [
-            _vm._v("Author : " + _vm._s(_vm.article.UserId.username))
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "card-text" }, [
-            _c("small", { staticClass: "text-muted" }, [
-              _vm._v(
-                _vm._s(
-                  new Date(_vm.article.createdAt).toLocaleDateString("en-US", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric"
-                  })
-                )
+  return _c(
+    "div",
+    {
+      staticClass: "row  mb-4 pt-5 px-5",
+      staticStyle: { border: "10px solid #343a40" }
+    },
+    [
+      _c("div", { staticClass: "col-6 mb-5" }, [
+        _c("h4", { staticClass: "card-title" }, [
+          _vm._v(_vm._s(_vm.article.title))
+        ]),
+        _vm._v(" "),
+        _c("p", {
+          staticClass: "card-text line-clamp",
+          staticStyle: { overflow: "hidden" },
+          domProps: { innerHTML: _vm._s(_vm.article.content) }
+        }),
+        _vm._v(" "),
+        _c("p", { staticStyle: { "font-size": "14px" } }, [
+          _vm._v("Author : " + _vm._s(_vm.article.UserId.username))
+        ]),
+        _vm._v(" "),
+        _c("p", { staticClass: "card-text" }, [
+          _c("small", { staticClass: "text-muted" }, [
+            _vm._v(
+              _vm._s(
+                new Date(_vm.article.createdAt).toLocaleDateString("en-US", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric"
+                })
               )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-secondary btn-sm",
-              on: {
-                click: function($event) {
-                  return _vm.detailedArticle(_vm.article)
-                }
-              }
-            },
-            [_vm._v("details")]
-          ),
-          _vm._v(" "),
-          _vm.isUserArticle
-            ? _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary btn-sm",
-                  on: {
-                    click: function($event) {
-                      return _vm.editArticle(_vm.article)
-                    }
-                  }
-                },
-                [_vm._v("edit")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.isUserArticle
-            ? _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary btn-sm",
-                  on: {
-                    click: function($event) {
-                      return _vm.removeArticle(_vm.article._id)
-                    }
-                  }
-                },
-                [_vm._v("delete")]
-              )
-            : _vm._e()
+            )
+          ])
         ]),
         _vm._v(" "),
         _c(
-          "div",
+          "button",
           {
-            staticClass: "card-body",
-            staticStyle: { width: "30%", display: "flex" }
+            staticClass: "btn btn-secondary btn-sm",
+            on: {
+              click: function($event) {
+                return _vm.detailedArticle(_vm.article)
+              }
+            }
           },
-          [_c("img", { attrs: { src: _vm.article.featured_image } })]
-        )
-      ]
-    )
-  ])
+          [_vm._v("details")]
+        ),
+        _vm._v(" "),
+        _vm.isUserArticle
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary btn-sm",
+                on: {
+                  click: function($event) {
+                    return _vm.editArticle(_vm.article)
+                  }
+                }
+              },
+              [_vm._v("edit")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.isUserArticle
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary btn-sm",
+                on: {
+                  click: function($event) {
+                    return _vm.removeArticle(_vm.article._id)
+                  }
+                }
+              },
+              [_vm._v("delete")]
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-6" }, [
+        _c("img", {
+          staticClass: "img-fluid mb-5",
+          attrs: { src: _vm.article.featured_image }
+        })
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -54154,7 +54169,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36111" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45231" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

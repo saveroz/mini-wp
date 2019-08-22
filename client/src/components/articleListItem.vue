@@ -1,33 +1,28 @@
 <template>
-  <div>
-    <div
-      class="card border-secondary mb-3"
-      style="display:flex;flex-direction:row;height:250px;border-width:3px;"
-    >
-      <div class="card-body" style="width:50%">
-        <h4 class="card-title">{{article.title}}</h4>
-        <p class="card-text line-clamp" style="overflow:hidden;" v-html="article.content"></p>
-        <p style="font-size:14px;">Author : {{article.UserId.username}}</p>
-        <p class="card-text">
-          <small
-            class="text-muted"
-          >{{new Date(article.createdAt).toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}}</small>
-        </p>
-        <button v-on:click="detailedArticle(article)" class="btn btn-secondary btn-sm">details</button>
-        <button
-          v-if="isUserArticle"
-          v-on:click="editArticle(article)"
-          class="btn btn-secondary btn-sm"
-        >edit</button>
-        <button
-          v-if="isUserArticle"
-          v-on:click="removeArticle(article._id)"
-          class="btn btn-secondary btn-sm"
-        >delete</button>
-      </div>
-      <div class="card-body" style="width:30%;display:flex;">
-        <img :src="article.featured_image" />
-      </div>
+  <div class="row  mb-4 pt-5 px-5" style="border:10px solid #343a40;">
+    <div class="col-6 mb-5">
+      <h4 class="card-title">{{article.title}}</h4>
+      <p class="card-text line-clamp" style="overflow:hidden;" v-html="article.content"></p>
+      <p style="font-size:14px;">Author : {{article.UserId.username}}</p>
+      <p class="card-text">
+        <small
+          class="text-muted"
+        >{{new Date(article.createdAt).toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}}</small>
+      </p>
+      <button v-on:click="detailedArticle(article)" class="btn btn-secondary btn-sm">details</button>
+      <button
+        v-if="isUserArticle"
+        v-on:click="editArticle(article)"
+        class="btn btn-secondary btn-sm"
+      >edit</button>
+      <button
+        v-if="isUserArticle"
+        v-on:click="removeArticle(article._id)"
+        class="btn btn-secondary btn-sm"
+      >delete</button>
+    </div>
+    <div class="col-6">
+      <img class="img-fluid mb-5" :src="article.featured_image" />
     </div>
   </div>
 </template>
@@ -57,25 +52,23 @@ export default {
         confirmButtonText: "Yes, delete it!"
       }).then(result => {
         if (result.value) {
-          
-    
-       return axios({
-        url: `http://34.87.39.22/articles/${id}`,
-        method: "DELETE",
-        headers: {
-          token
+          return axios({
+            url: `http://34.87.39.22/articles/${id}`,
+            method: "DELETE",
+            headers: {
+              token
+            }
+          })
+            .then(response => {
+              console.log(response);
+              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+              this.$emit("removedArticle", id);
+            })
+            .catch(err => {
+              console.log(err);
+            });
         }
-      })
-        .then(response => {
-          console.log(response);
-          Swal.fire("Deleted!", "Your file has been deleted.", "success");
-          this.$emit("removedArticle", id);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-        }
-      })
+      });
     },
     editArticle(obj) {
       this.$emit("editArticle", obj);
