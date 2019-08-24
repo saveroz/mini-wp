@@ -9,9 +9,17 @@ const mongoose = require('mongoose')
 const port = process.env.PORT || 3000
 const indexRoutes = require('./routes/indexRoutes')
 const errorHandler = require('./middleware/errorHandler')
+const db_url = process.env.DB_URL
 
 app.use(cors())
-mongoose.connect('mongodb+srv://saveroz:0721253062@cluster0-bv6qk.mongodb.net/miniwp?retryWrites=true&w=majority', {useNewUrlParser:true})
+
+mongoose.connect(db_url, {useNewUrlParser:true})
+.then(function(){
+    console.log("db connected")
+})
+.catch(function(){
+    console.log("db fail to connect")
+})
 
 app.use(express.urlencoded({extended:false})) 
 app.use(express.json())
