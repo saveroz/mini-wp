@@ -7,7 +7,10 @@ class ArticleController{
 
         // console.log(req.body,"masuk article controller")
         let UserId = req.decode.id
-        let featured_image = req.file.cloudStoragePublicUrl
+        let featured_image=null
+        if (req.file){
+            featured_image = req.file.cloudStoragePublicUrl
+        }
         const {title,content} = req.body
         Article.create({UserId,title,content,featured_image})
         .then(success=>{
@@ -32,7 +35,10 @@ class ArticleController{
         let id = req.params.id
         let updatedData = {}
         
-        req.file.cloudStoragePublicUrl && (updatedData.featured_image=req.file.cloudStoragePublicUrl)
+        if (req.file){
+            req.file.cloudStoragePublicUrl && (updatedData.featured_image=req.file.cloudStoragePublicUrl)
+        }
+
         req.body.title && (updatedData.title =req.body.title)
         req.body.content && (updatedData.content =req.body.content)
 

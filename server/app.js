@@ -9,7 +9,6 @@ const mongoose = require('mongoose')
 const port = process.env.PORT || 3000
 const indexRoutes = require('./routes/indexRoutes')
 const errorHandler = require('./middleware/errorHandler')
-const serverUrl = require('./')
 const db_url = process.env.DB_URL
 
 app.use(cors())
@@ -31,7 +30,7 @@ app.use('/', indexRoutes)
 app.use(errorHandler)
 
 app.listen(port, ()=>{
-    console.log(`listening to port ${PORT}`)
+    console.log(`listening to port ${port}`)
     // console.log(process.env.SECRET)
 })
 
