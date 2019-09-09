@@ -9,7 +9,8 @@ http://miniwordpress.saveroz.com/
 $ npm install
 $ npm run dev
 ```
-Access client via `http://localhost:8080`
+Access client via `http://miniwordpress.saveroz.com/`
+
 Access server via `http://34.87.39.22`
 
 ##  Routes
