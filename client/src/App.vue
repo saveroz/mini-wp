@@ -5,6 +5,7 @@
       @fromLogOutButton="loginCondition"
       @fromChildren="triggerParent"
       @showPage="showPageToggle"
+      @search="search"
       :message="message"
     ></navbar>
     <login
@@ -15,6 +16,7 @@
     <register v-if="!isLogin&&!isLoginForm" @fromRegisterForm="loginFormCondition"></register>
     <articleList
       v-if="isLogin"
+      @searchByTag="searchByTag($event)"
       @detailedArticle="detailedArticle($event)"
       @editArticle="editArticle($event)"
       @removedArticle="deleteArticle($event)"
@@ -90,16 +92,17 @@ export default {
       this.getAllArticles()
     },
     detailedArticle(obj) {
-      console.log("masuk ke detail");
-      console.log(obj);
+      // console.log("masuk ke detail");
+      // console.log(obj);
       this.articleDetailObj = obj;
       this.showPageToggle("detailedArticle");
     },
+    
     editArticle(obj) {
       // console.log(obj)
       this.showPageToggle("editArticle");
       this.articleToBeEdited = obj;
-      console.log(obj);
+      // console.log(obj);
     },
     loginCondition(cond) {
       let token = localStorage.getItem("token");
@@ -131,7 +134,7 @@ export default {
       } 
 
       else if (page == "AllArticle") {
-        console.log("masuk ke all article");
+        // console.log("masuk ke all article");
         this.isShowArticle = true;
         this.isUserArticle = false;
         this.isCreate = false;
@@ -141,7 +144,7 @@ export default {
       } 
 
       else if (page == "createTodoForm") {
-        console.log("masuk ke create");
+        // console.log("masuk ke create");
         this.isShowArticle = false;
         this.isCreate = true;
         this.isEditArticle = false;
@@ -157,7 +160,7 @@ export default {
       } 
       
       else if ((page = "detailedArticle")) {
-        console.log("masuk page");
+        // console.log("masuk page");
         this.isShowArticle = false;
         this.isUserArticle = false;
         this.isCreate = false;
@@ -167,8 +170,9 @@ export default {
     },
     getUserArticles() {
       let author = localStorage.getItem("author");
-      console.log(author);
+      // console.log("masuk ke user articles")
       this.allArticles = [];
+      // console.log(this.tempArticles)
       for (let article of this.tempArticles) {
         if (article.UserId) {
           if (article.UserId["_id"] == author) {
@@ -180,24 +184,47 @@ export default {
     getAllArticles() {
 
       // console.log("masuk ke get all");
-      localStorage.getItem("token")
+
       let token = localStorage.getItem("token")
       // console.log(token)
       axios({
-        url: "http://34.87.39.22/articles",
+        url: "http://localhost:3000/articles",
         method: "GET",
         headers: {
           token
         }
       })
         .then(response => {
-          console.log(response.data);
+          // console.log(response.data);
           this.allArticles = response.data;
           this.tempArticles = response.data;
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    searchByTag(tag){
+
+      let token = localStorage.getItem("token")
+
+      axios({
+        url : `http://localhost:3000/articles/${tag}`,
+        method : "GET",
+        headers : {token}
+      })
+      .then(response=>{
+        this.allArticles = response.data
+        // this.tempArticles = response.data
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+    },
+    search(value){
+      // console.log(value)
+      const title = new RegExp(value,'i')
+      this.allArticles = this.tempArticles.filter((el) => { return title.test(el.title)})
+      // console.log(this.allArticles)
     }
   },
   created() {
@@ -205,7 +232,6 @@ export default {
     if (localStorage.getItem("token")) {
       this.getAllArticles();
     }
-   
   }
 };
 </script>

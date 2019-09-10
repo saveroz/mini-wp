@@ -5,12 +5,12 @@ const { generatePass } = require('../helpers/encryptPass')
 const UserSchema = new Schema({
     username : {
         type :String,
-        required : true
+        required : [true, "username required"]
     },
     email : {
         type :String,
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
-        required : true,
+        required : [true, "email required"],
         validate : {
             validator : function(){
                 return new Promise((resolve,reject)=>{
@@ -34,7 +34,7 @@ const UserSchema = new Schema({
     },
     password : {
         type : String,
-        required :true}
+        required :[true, "pass"]}
 },{
     timestamps : true,
     versionKey :false

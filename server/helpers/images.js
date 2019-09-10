@@ -52,22 +52,25 @@ const sendUploadToGCS = (req, res, next) => {
   stream.end(req.file.buffer)
 }
 
-async function deleteFile(req, res, next) {
+async function deleteFile(req,res,next,url) {
 
-  let filename = req.body.link
-  filename = urlToFileName(filename)
+  // let filename = req.body.link
+  console.log("masuk ke delete file gcs")
+  let filename = urlToFileName(url)
 
   try {
     await storage
       .bucket(CLOUD_BUCKET)
       .file(filename)
       .delete();
-    res.status(200).json({
+      res.status(200).json({
       message: "successfully deleted in storage"
     })
   }
   catch{
-    res.status(500).json("hapus bro")
+    // res.status(500).json("hapus bro")
+    console.log("masuk ke catch")
+    next({status:500, message :"error when deleting the file on google cloud storage"})
   }
 
 }

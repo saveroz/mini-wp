@@ -1,7 +1,7 @@
 <template>
 <div v-if="isShowArticle" class="container mt-5">
 
-<articleListItem @detailedArticle="$emit('detailedArticle',$event)" @editArticle="$emit('editArticle',$event)" @removedArticle="$emit('removedArticle',$event)" v-for="article in allArticles" :key="article._id" v-bind:article="article" v-bind:isUserArticle="isUserArticle"></articleListItem>
+<articleListItem @searchByTag="$emit('searchByTag',$event)" @detailedArticle="$emit('detailedArticle',$event)" @editArticle="$emit('editArticle',$event)" @removedArticle="$emit('removedArticle',$event)" v-for="article in allArticles" :key="article._id" v-bind:article="article" v-bind:isUserArticle="isUserArticle"></articleListItem>
 
 </div>
 </template>

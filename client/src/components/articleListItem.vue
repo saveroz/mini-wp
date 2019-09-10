@@ -9,6 +9,15 @@
           class="text-muted"
         >{{new Date(article.createdAt).toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}}</small>
       </p>
+      <div style="display:flex;justify-content:space-around">
+      <p>tags : </p>
+      
+        <a href="#" @click="searchByTag(tag)"   v-for="(tag,i) in article.tags" :key="i">
+        <vs-chip>{{tag}}</vs-chip>
+        </a>
+      
+      </div>
+     
       <button v-on:click="detailedArticle(article)" class="btn btn-secondary btn-sm">details</button>
       <button
         v-if="isUserArticle"
@@ -53,7 +62,7 @@ export default {
       }).then(result => {
         if (result.value) {
           return axios({
-            url: `http://34.87.39.22/articles/${id}`,
+            url: `http://localhost:3000/articles/${id}`,
             method: "DELETE",
             headers: {
               token
@@ -76,7 +85,12 @@ export default {
     detailedArticle(obj) {
       console.log("list item detail");
       this.$emit("detailedArticle", obj);
+    },
+    searchByTag(tag){
+      this.$emit("searchByTag", tag)
+
     }
+
   }
 };
 </script>

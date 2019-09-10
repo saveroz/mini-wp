@@ -1,18 +1,19 @@
 const Article = require('../models/Article')
-
+const deleteFile = require("../helpers/images").deleteFile
 class ArticleController{
 
 
     static create(req, res, next){
 
-        // console.log(req.body,"masuk article controller")
+        let tags= req.body.tags
+        tags = tags.split(",")
         let UserId = req.decode.id
         let featured_image=null
         if (req.file){
             featured_image = req.file.cloudStoragePublicUrl
         }
         const {title,content} = req.body
-        Article.create({UserId,title,content,featured_image})
+        Article.create({UserId,title,content,featured_image,tags})
         .then(success=>{
             res.status(201).json(success)
         })
@@ -24,8 +25,15 @@ class ArticleController{
         const id = req.params.id
         
         Article.findByIdAndDelete(id)
-        .then(success=>{
-            res.status(200).json(success)
+        .then(thearticle=>{
+            // res.status(200).json(success)
+            if (thearticle.featured_image){
+                deleteFile(req,res,next,thearticle.featured_image)
+            }
+            else {
+                res.status(200).json(thearticle)
+            }
+            
         })
         .catch(next) 
     }
@@ -38,11 +46,16 @@ class ArticleController{
         if (req.file){
             req.file.cloudStoragePublicUrl && (updatedData.featured_image=req.file.cloudStoragePublicUrl)
         }
+        if(req.body.tags){
+            let tags= req.body.tags
+            tags = tags.split(",")
+            updatedData.tags=tags
+        }
 
         req.body.title && (updatedData.title =req.body.title)
         req.body.content && (updatedData.content =req.body.content)
 
-        Article.findByIdAndUpdate(id, updatedData, {new:true})
+        Article.findByIdAndUpdate(id, updatedData, {new:true}, { runValidators: true })
         .then(success=>{
             res.status(200).json(success)
         })
@@ -52,7 +65,7 @@ class ArticleController{
     static getAll(req, res, next){
         
 
-        Article.find().populate("UserId")
+        Article.find().sort({createdAt:"desc"}).populate("UserId")
         .then(allArticle=>{
             console.log("masuk ke get all article")
             res.status(200).json(allArticle)
@@ -67,6 +80,23 @@ class ArticleController{
         Article.find({UserId})
         .then(allUserArticle=>{
             res.status(200).json(allUserArticle)
+        })
+        .catch(next)
+    }
+    static getArticleByTag(req, res, next){
+
+        let tag = req.params.id
+        let filteredArticles = []
+        Article.find().populate("UserId")
+        .then(articles=>{
+            
+            for (let article of articles){
+                if (article.tags.includes(tag)){
+                    filteredArticles.push(article)
+                }
+            }
+
+            res.status(200).json(filteredArticles)
         })
         .catch(next)
     }

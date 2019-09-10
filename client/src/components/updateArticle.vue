@@ -20,6 +20,9 @@
         <div class="mb-3">
           <input type="file" @change="previewFile" name="image" ref="file" accept="image/*" />
         </div>
+          <div>
+          <vue-tags-input v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags" />
+        </div>
         <div>
           <wysiwyg style="text-overflow:auto" v-model="articleContent"></wysiwyg>
         </div>
@@ -31,7 +34,12 @@
 
 <script>
 import axios from "axios";
+import VueTagsInput from "@johmun/vue-tags-input";
+
 export default {
+  components : {
+     VueTagsInput
+  },
   props: {
     isCreate: Boolean,
     articleToBeEdited: Object
@@ -41,7 +49,9 @@ export default {
       articleTitle: "",
       articleContent: "",
       articleImage: "",
-      idArticle: ""
+      idArticle: "",
+      tags :[],
+      tag : ""
     };
   },
   methods: {
@@ -50,8 +60,19 @@ export default {
       this.articleContent = obj.content;
       this.articleImage = obj.featured_image;
       this.idArticle = obj._id;
+      for(let tag of obj.tags){
+        let data = {
+          text : tag
+        }
+        this.tags.push(data)
+      }
     },
     updateArticle() {
+      let tags = []
+      for (let tag of this.tags){
+        tags.push(tag.text)
+      }
+
       let title = this.articleTitle;
       let content = this.articleContent;
       let image = this.articleImage;
@@ -63,6 +84,7 @@ export default {
       bodyFormData.append("image", image);
       bodyFormData.append("title", title);
       bodyFormData.append("content", content);
+      bodyFormData.append("tags", tags);
       console.log(bodyFormData);
 
       Swal.fire({
@@ -72,7 +94,7 @@ export default {
             Swal.showLoading()
 
       axios({
-        url: `http://34.87.39.22/articles/${id}`,
+        url: `http://localhost:3000/articles/${id}`,
         method: "PATCH",
         data: bodyFormData,
         headers: {
@@ -81,7 +103,7 @@ export default {
       })
         .then(response => {
           Swal.close()
-          console.log(response);
+          // console.log(response);
           Swal.fire({
             type: "success",
             title: "You Have Edited Article Successfully !",
@@ -106,7 +128,7 @@ export default {
     }
   },
   created() {
-    console.log(this.articleToBeEdited);
+    // console.log(this.articleToBeEdited);
     this.getValueFromArticle(this.articleToBeEdited);
   }
 };

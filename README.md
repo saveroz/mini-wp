@@ -11,7 +11,7 @@ $ npm run dev
 ```
 Access client via `http://miniwordpress.saveroz.com/`
 
-Access server via `http://34.87.39.22`
+Access server via `http://localhost:3000`
 
 ##  Routes
 |Routes|HTTP|Header(s)|Body|Response|Description| 

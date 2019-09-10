@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@johmun/vue-tags-input": "^2.1.0",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.28",
@@ -19,7 +20,8 @@
     "vue-google-signin-button": "^1.0.4",
     "vue-google-signin-button-directive": "^1.0.3",
     "vue-hot-reload-api": "^2.3.3",
-    "vue-wysiwyg": "^1.7.2"
+    "vue-wysiwyg": "^1.7.2",
+    "vuesax": "^3.10.2"
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^3.0.0",

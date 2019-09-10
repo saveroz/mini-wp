@@ -75,7 +75,9 @@ class UserController{
         .then(user=>{
 
             if (!user){
-                throw new Error ('email/password not found')
+                // throw new Error ('email/password not found')
+                next({status:404, message : "you haven't registered please register first"})
+                
             }
 
             else if (checkPassword(password,user.password)){
@@ -93,7 +95,8 @@ class UserController{
             }
             else{
                 // res.status(200).json("you have failed to login")
-                throw new Error ('email/password not found')
+                // throw new Error ('email/password not found')
+                next({status:400, message : "email/password is wrong"})
             }
             
         })

@@ -16,6 +16,11 @@ import GSignInButton from 'vue-google-signin-button'
 
 // Vue.use(GAuth, gauthOption)
 // Vue.use(GSignInButton)
+import Vuesax from 'vuesax'
+
+import 'vuesax/dist/vuesax.css' //Vuesax styles
+Vue.use(Vuesax)
+
 Vue.use(wysiwyg, {
     hideModules: { "table": true, "image": true },
     maxHeight: "500px",

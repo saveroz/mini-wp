@@ -73,7 +73,7 @@ export default {
       console.log(idToken)
       axios({
         method: "POST",
-        url: "http://34.87.39.22/users/signIn",
+        url: "http://localhost:3000/users/signIn",
         data: {
             idToken
         }
@@ -96,7 +96,7 @@ export default {
       let password = this.inputPassword;
       axios({
         method: "POST",
-        url: `http://34.87.39.22/users/login`,
+        url: `http://localhost:3000/users/login`,
         data: {
           email,
           password
