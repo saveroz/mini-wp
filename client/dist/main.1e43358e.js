@@ -49944,7 +49944,7 @@ var _default = {
         _this.$emit("showPage", "AllArticle");
       }).catch(function (err) {
         // console.log(err)
-        var message = err.response.data.message; // swal("Error!", errMessage , "error")
+        var message = err.response && err.response.data.message || "failed to edit"; // swal("Error!", errMessage , "error")
 
         Swal.fire({
           type: "error",
@@ -50189,6 +50189,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
 var _default = {
   props: {
     article: Object,
@@ -50225,7 +50228,12 @@ var _default = {
 
             _this.$emit("removedArticle", id);
           }).catch(function (err) {
-            console.log(err);
+            var message = err.response && err.response.data.message || "failed to delete data";
+            Swal.fire({
+              type: "error",
+              title: "failed to delete article",
+              text: message
+            }); // console.log(err);
           });
         }
       });
@@ -50267,11 +50275,27 @@ exports.default = _default;
           _vm._v(_vm._s(_vm.article.title))
         ]),
         _vm._v(" "),
-        _c("p", {
-          staticClass: "card-text line-clamp",
-          staticStyle: { overflow: "hidden" },
-          domProps: { innerHTML: _vm._s(_vm.article.content) }
-        }),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "line-clamp",
+                rawName: "v-line-clamp:20",
+                value: 2,
+                expression: "2",
+                arg: "20"
+              }
+            ]
+          },
+          [
+            _c("p", {
+              staticClass: "card-text",
+              staticStyle: { overflow: "hidden" },
+              domProps: { innerHTML: _vm._s(_vm.article.content) }
+            })
+          ]
+        ),
         _vm._v(" "),
         _c("p", { staticStyle: { "font-size": "14px" } }, [
           _vm._v("Author : " + _vm._s(_vm.article.UserId.username))
@@ -51575,6 +51599,8 @@ var _default = {
         _this.articleTitle = "";
         _this.articleContent = "";
         _this.articleImage = "";
+        _this.tags = [];
+        _this.tag = "";
         Swal.close();
         Swal.fire({
           type: "success",
@@ -51956,9 +51982,6 @@ var _default = {
       this.isLoginForm = cond;
     },
     deleteArticle: function deleteArticle(id) {
-      this.allArticles = this.allArticles.filter(function (article) {
-        article._id !== id;
-      });
       this.getAllArticles();
     },
     detailedArticle: function detailedArticle(obj) {
@@ -55376,6 +55399,117 @@ function installGoogleAuthPlugin(Vue, options) {
 
 var _default = installGoogleAuthPlugin;
 exports.default = _default;
+},{}],"node_modules/vue-line-clamp/dist/vue-line-clamp.js":[function(require,module,exports) {
+var define;
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+!function (e, t) {
+  "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) && "object" == (typeof module === "undefined" ? "undefined" : _typeof(module)) ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == (typeof exports === "undefined" ? "undefined" : _typeof(exports)) ? exports["vue-line-clamp"] = t() : e["vue-line-clamp"] = t();
+}(window, function () {
+  return function (e) {
+    var t = {};
+
+    function n(r) {
+      if (t[r]) return t[r].exports;
+      var o = t[r] = {
+        i: r,
+        l: !1,
+        exports: {}
+      };
+      return e[r].call(o.exports, o, o.exports, n), o.l = !0, o.exports;
+    }
+
+    return n.m = e, n.c = t, n.d = function (e, t, r) {
+      n.o(e, t) || Object.defineProperty(e, t, {
+        enumerable: !0,
+        get: r
+      });
+    }, n.r = function (e) {
+      "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e, Symbol.toStringTag, {
+        value: "Module"
+      }), Object.defineProperty(e, "__esModule", {
+        value: !0
+      });
+    }, n.t = function (e, t) {
+      if (1 & t && (e = n(e)), 8 & t) return e;
+      if (4 & t && "object" == _typeof(e) && e && e.__esModule) return e;
+      var r = Object.create(null);
+      if (n.r(r), Object.defineProperty(r, "default", {
+        enumerable: !0,
+        value: e
+      }), 2 & t && "string" != typeof e) for (var o in e) {
+        n.d(r, o, function (t) {
+          return e[t];
+        }.bind(null, o));
+      }
+      return r;
+    }, n.n = function (e) {
+      var t = e && e.__esModule ? function () {
+        return e.default;
+      } : function () {
+        return e;
+      };
+      return n.d(t, "a", t), t;
+    }, n.o = function (e, t) {
+      return Object.prototype.hasOwnProperty.call(e, t);
+    }, n.p = "", n(n.s = 0);
+  }([function (e, t, n) {
+    "use strict";
+
+    n.r(t);
+
+    function r(e, t, n) {
+      if (n) {
+        var r = parseInt(t.arg);
+        isNaN(r) && (console.warn("line-height argument for vue-line-clamp must be a number (of pixels), falling back to 16px"), r = 16);
+        var o = r * n;
+        e.style.maxHeight = o ? o + "px" : "", e.style.overflowX = "hidden", e.style.lineHeight = r + "px";
+      } else e.style.maxHeight = e.style.overflowX = "";
+    }
+
+    var o = function o(e, t, n) {
+      var r = parseInt(t.value);
+      isNaN(r) ? console.error("Parameter for vue-line-clamp must be a number") : r !== e.vLineClampValue && (e.vLineClampValue = r, n ? n(e, t, r) : e.style.webkitLineClamp = r || "");
+    },
+        i = {
+      install: function install(e, t) {
+        t = Object.assign({
+          importCss: !1,
+          textOverflow: "ellipsis"
+        }, t);
+        var n = "\n      display: block;\n      display: -webkit-box;\n      -webkit-box-orient: vertical;\n      overflow: hidden;\n      word-break: break-all;\n      text-overflow: ".concat(t.textOverflow, ";\n    ");
+
+        if (t.importCss) {
+          var i = window.document.styleSheets,
+              l = ".vue-line-clamp{".concat(n, "}");
+          if (i && i[0] && i.insertRule) i.insertRule(l);else {
+            var a = window.document.createElement("style");
+            a.id = "vue-line-clamp", a.appendChild(window.document.createTextNode(l)), window.document.head.appendChild(a);
+          }
+        }
+
+        var u = "webkitLineClamp" in document.body.style ? void 0 : t.fallbackFunc || r;
+        e.directive("line-clamp", {
+          currentValue: 0,
+          bind: function bind(e) {
+            t.importCss ? e.classList.add("vue-line-clamp") : e.style.cssText += n;
+          },
+          inserted: function inserted(e, t) {
+            return o(e, t, u);
+          },
+          updated: function updated(e, t) {
+            return o(e, t, u);
+          },
+          componentUpdated: function componentUpdated(e, t) {
+            return o(e, t, u);
+          }
+        });
+      }
+    };
+
+    t.default = i;
+  }]).default;
+});
 },{}],"node_modules/vuesax/dist/vuesax.common.js":[function(require,module,exports) {
 var global = arguments[3];
 var define;
@@ -71020,6 +71154,8 @@ var _vueGoogleOauth = _interopRequireDefault(require("vue-google-oauth2"));
 
 var _vueGoogleSigninButton = _interopRequireDefault(require("vue-google-signin-button"));
 
+var _vueLineClamp = _interopRequireDefault(require("vue-line-clamp"));
+
 var _vuesax = _interopRequireDefault(require("vuesax"));
 
 require("vuesax/dist/vuesax.css");
@@ -71045,11 +71181,14 @@ _vue.default.use(_vueWysiwyg.default, {
   forcePlainTextOnPaste: false
 });
 
-_vue.default.use(_bootstrapVue.default); // Vue.use(Swal)
+_vue.default.use(_bootstrapVue.default);
+
+_vue.default.use(_vueLineClamp.default, {// plugin options
+}); // Vue.use(Swal)
 
 
 new _vue.default(_App.default).$mount('#app');
-},{"vue":"node_modules/vue/dist/vue.runtime.esm.js","sweetalert2":"node_modules/sweetalert2/dist/sweetalert2.all.js","bootstrap-vue":"node_modules/bootstrap-vue/esm/index.js","bootstrap/dist/css/bootstrap.css":"node_modules/bootstrap/dist/css/bootstrap.css","bootstrap-vue/dist/bootstrap-vue.css":"node_modules/bootstrap-vue/dist/bootstrap-vue.css","./App.vue":"src/App.vue","vue-wysiwyg":"node_modules/vue-wysiwyg/dist/vueWysiwyg.js","vue-google-oauth2":"node_modules/vue-google-oauth2/index.js","vue-google-signin-button":"node_modules/vue-google-signin-button/dist/vue-google-signin-button.min.js","vuesax":"node_modules/vuesax/dist/vuesax.common.js","vuesax/dist/vuesax.css":"node_modules/vuesax/dist/vuesax.css"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"vue":"node_modules/vue/dist/vue.runtime.esm.js","sweetalert2":"node_modules/sweetalert2/dist/sweetalert2.all.js","bootstrap-vue":"node_modules/bootstrap-vue/esm/index.js","bootstrap/dist/css/bootstrap.css":"node_modules/bootstrap/dist/css/bootstrap.css","bootstrap-vue/dist/bootstrap-vue.css":"node_modules/bootstrap-vue/dist/bootstrap-vue.css","./App.vue":"src/App.vue","vue-wysiwyg":"node_modules/vue-wysiwyg/dist/vueWysiwyg.js","vue-google-oauth2":"node_modules/vue-google-oauth2/index.js","vue-google-signin-button":"node_modules/vue-google-signin-button/dist/vue-google-signin-button.min.js","vue-line-clamp":"node_modules/vue-line-clamp/dist/vue-line-clamp.js","vuesax":"node_modules/vuesax/dist/vuesax.common.js","vuesax/dist/vuesax.css":"node_modules/vuesax/dist/vuesax.css"}],"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -71077,7 +71216,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34065" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44781" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

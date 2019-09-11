@@ -4,14 +4,18 @@ const ArticleController = require('../controllers/ArticleController')
 const authentication = require('../middleware/authentication')
 const authorization = require('../middleware/authorization')
 const {sendUploadToGCS,multer} = require('../helpers/images')
+const translateToIna = require('../middleware/translate')
+const filterBadWord = require('../helpers/badWords')
 
 router.use(authentication)
 router.get('/', ArticleController.getAll)
 router.get('/:id', ArticleController.getArticleByTag)
-router.post('/', multer.single('image'),sendUploadToGCS,ArticleController.create)
+router.post('/', multer.single('image'),sendUploadToGCS,filterBadWord, translateToIna,ArticleController.create)
 router.delete('/:id',authorization,ArticleController.delete)
-router.patch('/:id',authorization,multer.single('image'),sendUploadToGCS,ArticleController.update)
+router.patch('/:id',authorization,multer.single('image'),filterBadWord, sendUploadToGCS,ArticleController.update)
 
 
 
 module.exports = router
+
+

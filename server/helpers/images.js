@@ -16,7 +16,7 @@ const getPublicUrl = (filename) => {
 }
 
 const sendUploadToGCS = (req, res, next) => {
-  console.log(req.file ,"masuk ke upload GCS")
+  // console.log(req.file ,"masuk ke upload GCS")
   if (!req.file) {
     return next()
   }
@@ -55,7 +55,7 @@ const sendUploadToGCS = (req, res, next) => {
 async function deleteFile(req,res,next,url) {
 
   // let filename = req.body.link
-  console.log("masuk ke delete file gcs")
+  // console.log("masuk ke delete file gcs")
   let filename = urlToFileName(url)
 
   try {
@@ -69,7 +69,7 @@ async function deleteFile(req,res,next,url) {
   }
   catch{
     // res.status(500).json("hapus bro")
-    console.log("masuk ke catch")
+    // console.log("masuk ke catch")
     next({status:500, message :"error when deleting the file on google cloud storage"})
   }
 

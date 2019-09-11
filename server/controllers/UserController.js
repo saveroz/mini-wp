@@ -1,4 +1,3 @@
-require("dotenv").config();
 const User = require('../models/User');
 const { OAuth2Client } = require('google-auth-library');
 const Secret=process.env.SECRET
@@ -17,8 +16,16 @@ class UserController{
         console.log(username)
         
         User.create({username, email, password})
-        .then(success=>{
-            res.status(201).json("your account register successfully")
+        .then(user=>{
+            // res.status(201).json("your account register successfully")
+            let userdata = {
+                'username' : user.username,
+                'id' : user._id,
+                'email' : user.email
+            }
+            
+            let token = jwt.sign(userdata,Secret)
+            res.status(201).json({token,})
         })
         .catch(next)
 
@@ -57,8 +64,9 @@ class UserController{
             }
             
             let token = jwt.sign(userdata,Secret)
-            let author = user._id
-            res.json({token,author})       
+            // let author = user._id
+            // res.json({token,author})
+            res.status(200).json({token})       
         })
         .catch(next)
         
@@ -86,11 +94,11 @@ class UserController{
                     'id' : user._id,
                     'email' : user.email
                 }
-                console.log(Secret)
+                
                 let token = jwt.sign(userdata,Secret)
-                let author = user._id
-                res.status(200).json({token,author})
-                // res.status(200).json(token)       
+                // let author = user._id
+                // res.status(200).json({token,author})
+                res.status(200).json({token})       
                 // res.status(200).json("you have success to login")
             }
             else{
@@ -105,3 +113,6 @@ class UserController{
 }
 
 module.exports = UserController
+
+
+

@@ -83,6 +83,8 @@ export default {
           this.articleTitle = "";
           this.articleContent = "";
           this.articleImage = "";
+          this.tags= []
+          this.tag =""
           Swal.close();
           Swal.fire({
             type: "success",

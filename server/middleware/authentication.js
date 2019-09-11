@@ -4,41 +4,32 @@ const User = require('../models/User')
 
 function authentication(req,res,next){    
     try {
-        console.log("authentication")
-        // console.log(process.env.SECRET)
-        // console.log(req.headers.token)
+        // console.log("authentication")
         const token = req.headers.token
         const decode = jwt.verify(token, Secret)
         // console.log(decode)
         req.decode = decode
         let id = req.decode.id
-        console.log(id)
+        // console.log(id)
 
         User.findById(id)
         .then(user=>{
             
             if(user){
-                console.log("masuk ke user")
+                // console.log("masuk ke user")
                 next()
             }
             else{
-                res.status(401).json({
-                    message : 'You are not authenticated Users'
-                })
+                next({status:401, message : "you are not authenticated user"})
             }
-        }).catch(err=>{
-            console.log(err)
-        })
+        }).catch(next)
         
     }
     catch{
-        // console.log(req.headers.token)
-        res.status(401).json({
-            message: 'You are not authenticated User'
-        })
-       
+        next({status:401, message : "you are not authenticate user"})
     }
     
 }
 
 module.exports = authentication
+

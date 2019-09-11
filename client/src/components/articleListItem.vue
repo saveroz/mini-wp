@@ -2,7 +2,10 @@
   <div class="row  mb-4 pt-5 px-5" style="border:10px solid #343a40;">
     <div class="col-6 mb-5">
       <h4 class="card-title">{{article.title}}</h4>
-      <p class="card-text line-clamp" style="overflow:hidden;" v-html="article.content"></p>
+      <div v-line-clamp:20="2">
+
+      <p class="card-text" style="overflow:hidden;" v-html="article.content"></p>
+      </div>
       <p style="font-size:14px;">Author : {{article.UserId.username}}</p>
       <p class="card-text">
         <small
@@ -74,7 +77,13 @@ export default {
               this.$emit("removedArticle", id);
             })
             .catch(err => {
-              console.log(err);
+              let message = err.response && err.response.data.message || "failed to delete data"
+              Swal.fire({
+                type : "error",
+                title : "failed to delete article",
+                text : message
+              })
+              // console.log(err);
             });
         }
       });

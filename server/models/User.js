@@ -34,7 +34,7 @@ const UserSchema = new Schema({
     },
     password : {
         type : String,
-        required :[true, "pass"]}
+        required :[true, "password is required"]}
 },{
     timestamps : true,
     versionKey :false

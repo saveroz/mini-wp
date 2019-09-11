@@ -86,9 +86,7 @@ export default {
       this.isLoginForm = cond;
     },
     deleteArticle(id) {
-      this.allArticles = this.allArticles.filter(article => {
-        article._id !== id;
-      });
+      
       this.getAllArticles()
     },
     detailedArticle(obj) {

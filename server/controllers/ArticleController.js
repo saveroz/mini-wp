@@ -1,5 +1,6 @@
 const Article = require('../models/Article')
 const deleteFile = require("../helpers/images").deleteFile
+
 class ArticleController{
 
 
@@ -12,7 +13,8 @@ class ArticleController{
         if (req.file){
             featured_image = req.file.cloudStoragePublicUrl
         }
-        const {title,content} = req.body
+        let {title,content} = req.body
+        // content = filter.clean(content)
         Article.create({UserId,title,content,featured_image,tags})
         .then(success=>{
             res.status(201).json(success)
@@ -55,7 +57,7 @@ class ArticleController{
         req.body.title && (updatedData.title =req.body.title)
         req.body.content && (updatedData.content =req.body.content)
 
-        Article.findByIdAndUpdate(id, updatedData, {new:true}, { runValidators: true })
+        Article.findByIdAndUpdate(id, updatedData, {new:true, runValidators: true})
         .then(success=>{
             res.status(200).json(success)
         })

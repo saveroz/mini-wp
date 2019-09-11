@@ -7,7 +7,7 @@ import App from './App.vue';
 import wysiwyg from "vue-wysiwyg";
 import GAuth from 'vue-google-oauth2'
 import GSignInButton from 'vue-google-signin-button'
-
+import lineClamp from 'vue-line-clamp'
 // const gauthOption = {
 //   clientId: '323874734298-vrlavakg3iqb6ig2qbp22c7ijisk1pd9.apps.googleusercontent.com'
 // //   scope: 'profile email',
@@ -27,6 +27,9 @@ Vue.use(wysiwyg, {
     forcePlainTextOnPaste: false
 });
 Vue.use(BootstrapVue)
+Vue.use(lineClamp, {
+    // plugin options
+})
 // Vue.use(Swal)
 
 new Vue(App).$mount('#app');

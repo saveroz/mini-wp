@@ -3,29 +3,32 @@ const Article = require('../models/Article')
 
 function authorization(req,res,next){
     
-    console.log('authorization')
+    // console.log('authorization')
     let id = req.params.id
-    console.log(req.decode.id)
-    console.log(req.params.id ,"id article")
-    Article.findOne({
-        '_id':id,
-        'UserId': req.decode.id 
-    })
+    let UserId = req.decode.id
+    // console.log(req.decode.id)
+    // console.log(req.params.id ,"id article")
+    Article.findById(id)
     .then(article=>{
-        console.log(article)
-        if (!article){
-            console.log('masuk ke null')
-            res.status(401).json(`${req.decode.username} not authorized please check carefully`)
+        if(!article){
+            
+            next({status:404,message : "article not found"})
         }
         else{
-            next()
+            // console.log(article)
+
+            if (article.UserId == UserId){
+                console.log("ini article UserId", article.UserId)
+                console.log("ini dari login", UserId)
+                next()
+            }
+            else {
+                next({status:401, message : "You are not authorized"})
+            }
         }
-        
     })
-    .catch(err=>{
-        console.log("masuk ke catch")
-        res.status(500).json(err)
-    })
+    .catch(next)
+
 }
 
 module.exports = authorization

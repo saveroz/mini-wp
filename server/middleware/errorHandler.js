@@ -5,9 +5,12 @@ function errorHandler (err, req, res, next) {
   }
 
   else if (err.name=="ValidationError"){
-    
+    // console.log(err.errors.content.message)
+    console.log(err)
+
     res.status(400).json({
-      message : err.message
+      
+      message : err.errors.content.message || err.message 
     })
 
   }
