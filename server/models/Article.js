@@ -8,13 +8,17 @@ const ArticleSchema = new Schema({
     },
     content : {
         type : String,
-        minlength :[200, "minimum character is 200"],
+        minlength :[100, "minimum character is 100"],
         required :[true, "content required"]
     },
     UserId : {
         type : Schema.Types.ObjectId,
         ref : "User",
         required : true
+    },
+    views : {
+        type : Number,
+        default : 0
     },
     featured_image : {
         type : String,
@@ -29,7 +33,7 @@ const ArticleSchema = new Schema({
     versionKey :false
 })
 
-
+// Article
 const Article = mongoose.model("Article", ArticleSchema)
 
 module.exports = Article

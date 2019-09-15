@@ -23,9 +23,12 @@ class UserController{
                 'id' : user._id,
                 'email' : user.email
             }
-            
+            const currentUser = {
+                "username" : user.username,
+                "id" : User._id
+            }
             let token = jwt.sign(userdata,Secret)
-            res.status(201).json({token,})
+            res.status(201).json({token,currentUser})
         })
         .catch(next)
 
@@ -64,9 +67,14 @@ class UserController{
             }
             
             let token = jwt.sign(userdata,Secret)
+            let currentUser = {
+                "username" : user.username,
+                "id" : User._id
+            }
+            currentUser = JSON.stringify(currentUser)
             // let author = user._id
             // res.json({token,author})
-            res.status(200).json({token})       
+            res.status(200).json({token,currentUser})       
         })
         .catch(next)
         
@@ -94,11 +102,18 @@ class UserController{
                     'id' : user._id,
                     'email' : user.email
                 }
+                let currentUser = {
+                    "username" : user.username,
+                    "id" : user._id
+                }
                 
                 let token = jwt.sign(userdata,Secret)
+                console.log(currentUser)
+                currentUser = JSON.stringify(currentUser)
                 // let author = user._id
                 // res.status(200).json({token,author})
-                res.status(200).json({token})       
+                
+                res.status(200).json({token,currentUser})       
                 // res.status(200).json("you have success to login")
             }
             else{

@@ -15,7 +15,7 @@
                     <label for="pwd">Password:</label>
                     <input type="password" class="form-control" v-model="password">
                 </div>
-                <center><button type="submit" class="btn btn-default" style="background-color: #0f0e0ec5; color : rgb(255, 255, 255);" >register</button> </center>
+                <center><button type="submit" class="btn btn-default"  style="font-weight:bold;background-color:rgb(34, 4, 65); color : rgb(255, 255, 255);" >register</button> </center>
                 <hr>
                 <hr>
                 <center><span>Already have an account?</span></center>

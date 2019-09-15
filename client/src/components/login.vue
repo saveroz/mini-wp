@@ -2,6 +2,9 @@
   <!-- Default form login -->
 
   <div class="card-body mx-auto mt-2" id="formLogin" style="width:30%">
+    <div  style="display:flex;">
+    <!-- <img :src="image" class="mx-auto" style="width:200px;height:200px"> -->
+    </div>
     <h2 class="text-center">Sign In</h2>
     <form v-on:submit.prevent="login">
       <div class="form-group">
@@ -16,14 +19,13 @@
         <button
           type="submit"
           class="btn btn-default"
-          style="background-color: #0f0e0ec5; color : rgb(255, 255, 255);"
+          style="font-weight:bold;background-color:rgb(34, 4, 65);color:rgb(255, 255, 255);"
         >login</button>
       </center>
     </form>
     <hr />
-    <div>
-      <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
-      <button v-google-signin-button="clientId" class="google-signin-button"> Continue with Google</button>
+    <div class="text-center">
+      <button style="font-weight:bold"   v-google-signin-button="clientId" class="google-signin-button">Continue with Google</button>
     </div>
     <hr />
     <!-- <h3>OR</h3> -->
@@ -47,6 +49,7 @@ import axios from "axios";
 import GoogleSignInButton from "vue-google-signin-button-directive";
 import GSignInButton from "vue-google-signin-button";
 // import Swal from "sweetalert2"
+import image from '../../img/logo.png'
 
 export default {
     directives: {
@@ -54,7 +57,8 @@ export default {
   },
   data() {
     return {
-        clientId:
+      image : image,
+      clientId:
           "323874734298-vrlavakg3iqb6ig2qbp22c7ijisk1pd9.apps.googleusercontent.com",
       googleSignInParams: {
         clientId:
@@ -80,7 +84,9 @@ export default {
         })
         .then(response => {
           localStorage.setItem("token", response.data.token);
-          localStorage.setItem("author", response.data.author);
+          // localStorage.setItem("author", response.data.author);
+          localStorage.setItem("currentUser", response.data.currentUser) 
+          let currentUser = JSON.parse(localStorage.getItem("currentUser"))
           this.$emit("fromLoginFormLoginCond", true)
         })
         .catch(err => {
@@ -109,10 +115,15 @@ export default {
                     showConfirmButton: false,
                     timer: 1500
                 })
-          console.log(response.data);
+          // console.log(response.data);
+          // console.log(JSON.parse(response.data.currentUser).username)
+          localStorage.setItem("currentUser", response.data.currentUser) 
           localStorage.setItem("token", response.data.token);
-          localStorage.setItem("author", response.data.author);
-          this.$emit("fromLoginFormLoginCond", true);
+          let currentUser = JSON.parse(localStorage.getItem("currentUser"))
+          // console.log(currentUser)
+          // console.log(currentUser.username)
+          // localStorage.setItem("author", response.data.author);
+          this.$emit("fromLoginFormLoginCond", true, currentUser);
         })
         .catch(err => {
           let message = err.response.data.message;

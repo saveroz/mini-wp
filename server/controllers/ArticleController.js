@@ -7,6 +7,7 @@ class ArticleController{
     static create(req, res, next){
 
         let tags= req.body.tags
+        console.log(tags)
         tags = tags.split(",")
         let UserId = req.decode.id
         let featured_image=null
@@ -30,6 +31,7 @@ class ArticleController{
         .then(thearticle=>{
             // res.status(200).json(success)
             if (thearticle.featured_image){
+                // console.log("masuk ke function delete article")
                 deleteFile(req,res,next,thearticle.featured_image)
             }
             else {
@@ -69,7 +71,7 @@ class ArticleController{
 
         Article.find().sort({createdAt:"desc"}).populate("UserId")
         .then(allArticle=>{
-            console.log("masuk ke get all article")
+            // console.log("masuk ke get all article")
             res.status(200).json(allArticle)
         })
         .catch(next)
@@ -79,7 +81,7 @@ class ArticleController{
 
         let UserId = req.decode.id
 
-        Article.find({UserId})
+        Article.find({UserId}).sort({createdAt:"desc"}).populate("UserId")
         .then(allUserArticle=>{
             res.status(200).json(allUserArticle)
         })
@@ -89,7 +91,7 @@ class ArticleController{
 
         let tag = req.params.id
         let filteredArticles = []
-        Article.find().populate("UserId")
+        Article.find().sort({createdAt:"desc"}).populate("UserId")
         .then(articles=>{
             
             for (let article of articles){
@@ -99,6 +101,21 @@ class ArticleController{
             }
 
             res.status(200).json(filteredArticles)
+        })
+        .catch(next)
+    }
+
+    static addView(req, res,next){
+
+        console.log("masuk ke addView")
+        let id = req.params.id  
+        console.log(id)
+        Article.findById(id)
+        .then(article=>{
+            let view = article.views + 1
+            article.views = view
+            article.save()
+            res.status(200).json(article) 
         })
         .catch(next)
     }

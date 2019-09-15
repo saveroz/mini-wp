@@ -26,7 +26,7 @@
         <div>
           <wysiwyg style="text-overflow:auto" v-model="articleContent"></wysiwyg>
         </div>
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="submit" variant="dark">Submit</b-button>
       </b-form>
     </b-container>
   </div>
@@ -110,7 +110,7 @@ export default {
             showConfirmButton: false,
             timer: 1500
           });
-          this.$emit("showPage", "AllArticle");
+          this.$emit("showPage", "UserArticle");
         })
         .catch(err => {
           // console.log(err)

@@ -16,6 +16,9 @@ function translateToIna(req,res,next){
     else{
         
         req.body.content = res.text
+        let tags= req.body.tags
+        tags += ",translated"
+        req.body.tags = tags
         next()
     }
     // console.log(res.text);

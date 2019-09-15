@@ -7,6 +7,7 @@
       @showPage="showPageToggle"
       @search="search"
       :message="message"
+      :currentUser="currentUser"
     ></navbar>
     <login
       v-if="!isLogin&&isLoginForm"
@@ -74,7 +75,8 @@ export default {
       counter: 0,
       allArticles: [],
       tempArticles: [],
-      isLoginForm: true
+      isLoginForm: true,
+      currentUser : {},
     };
   },
   methods: {
@@ -87,7 +89,10 @@ export default {
     },
     deleteArticle(id) {
       
-      this.getAllArticles()
+      // this.getAllArticles()
+      this.showPageToggle("UserArticle")
+      // this.isUserArticle()
+      // this.getUserArticles()
     },
     detailedArticle(obj) {
       // console.log("masuk ke detail");
@@ -102,8 +107,10 @@ export default {
       this.articleToBeEdited = obj;
       // console.log(obj);
     },
-    loginCondition(cond) {
+    loginCondition(cond,currentUser) {
       let token = localStorage.getItem("token");
+      this.currentUser = currentUser
+
       if (token) {
         this.isLogin = true;
         this.getAllArticles();
@@ -112,17 +119,21 @@ export default {
       else {
 
         if (cond) {
+          this.isUserArticle = false;
           this.isLogin = true;
           this.getAllArticles();
         } 
         else {
           this.isLogin = false;
+          this.allArticles = []
+          this.isUserArticle = false;
         }
       }
     },
     showPageToggle(page) {
       if (page == "UserArticle") {
         // console.log("masuk ke user article")
+        // this.getAllArticles()
         this.isShowArticle = true;
         this.isUserArticle = true;
         this.isCreate = false;
@@ -167,22 +178,43 @@ export default {
       }
     },
     getUserArticles() {
-      let author = localStorage.getItem("author");
-      // console.log("masuk ke user articles")
-      this.allArticles = [];
-      // console.log(this.tempArticles)
-      for (let article of this.tempArticles) {
-        if (article.UserId) {
-          if (article.UserId["_id"] == author) {
-            this.allArticles.push(article);
-          }
-        }
-      }
+
+      let token = localStorage.getItem("token")
+      axios({
+        url : "http://localhost:3000/articles/user",
+        method : "GET",
+        headers : {token}
+      })
+      .then(response=>{          // console.log(response.data);
+
+          this.allArticles = response.data;
+          this.tempArticles = response.data;
+      })
+      .catch(err=>{
+        console.log(err)
+      })
+      // console.log("masuk ke user article")
+      // this.getAllArticles()
+      // // console.log(author)
+      // let currentUser = JSON.parse(localStorage.getItem("currentUser"))
+      // // console.log(currentUser.username)
+      // let authorId = currentUser.id;
+      // // console.log("masuk ke user articles")
+      // // this.getAllArticles()
+      // this.allArticles = [];
+      // // console.log(this.tempArticles)
+      // for (let article of this.tempArticles) {
+      //   if (article.UserId) {
+      //     if (article.UserId["_id"] == authorId) {
+      //       this.allArticles.push(article);
+      //     }
+      //   }
+      // }
     },
     getAllArticles() {
 
       // console.log("masuk ke get all");
-
+       console.log("masuk ke get all articles")
       let token = localStorage.getItem("token")
       // console.log(token)
       axios({
@@ -229,10 +261,21 @@ export default {
     this.loginCondition(null);
     if (localStorage.getItem("token")) {
       this.getAllArticles();
+      if (localStorage.getItem("currentUser")){
+        this.currentUser = JSON.parse(localStorage.getItem("currentUser"))
+      }
+    }
+    else {
+       
+      this.allArticles = [],
+      this.tempArticles = []
     }
   }
 };
 </script>
 
-<style scoped>
+<style>
+*{
+ font-family: 'Quicksand', sans-serif; 
+}
 </style>

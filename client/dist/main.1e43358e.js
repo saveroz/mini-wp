@@ -49941,7 +49941,7 @@ var _default = {
           timer: 1500
         });
 
-        _this.$emit("showPage", "AllArticle");
+        _this.$emit("showPage", "UserArticle");
       }).catch(function (err) {
         // console.log(err)
         var message = err.response && err.response.data.message || "failed to edit"; // swal("Error!", errMessage , "error")
@@ -50091,11 +50091,9 @@ exports.default = _default;
                 1
               ),
               _vm._v(" "),
-              _c(
-                "b-button",
-                { attrs: { type: "submit", variant: "primary" } },
-                [_vm._v("Submit")]
-              )
+              _c("b-button", { attrs: { type: "submit", variant: "dark" } }, [
+                _vm._v("Submit")
+              ])
             ],
             1
           )
@@ -50192,6 +50190,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
 var _default = {
   props: {
     article: Object,
@@ -50242,8 +50242,24 @@ var _default = {
       this.$emit("editArticle", obj);
     },
     detailedArticle: function detailedArticle(obj) {
+      var _this2 = this;
+
       console.log("list item detail");
-      this.$emit("detailedArticle", obj);
+      var id = obj._id;
+      var token = localStorage.getItem("token");
+      (0, _axios.default)({
+        url: "http://localhost:3000/articles/".concat(id, "/addView"),
+        method: "PATCH",
+        headers: {
+          token: token
+        }
+      }).then(function (response) {
+        console.log(response.data);
+
+        _this2.$emit("detailedArticle", obj);
+      }).catch(function (err) {
+        console.log(err.response.data);
+      }); // console.log(id)
     },
     searchByTag: function searchByTag(tag) {
       this.$emit("searchByTag", tag);
@@ -50266,14 +50282,16 @@ exports.default = _default;
   return _c(
     "div",
     {
-      staticClass: "row  mb-4 pt-5 px-5",
-      staticStyle: { border: "10px solid #343a40" }
+      staticClass: "row mb-4 pt-5 px-5",
+      staticStyle: { border: "10px solid #343a40", height: "400px" }
     },
     [
       _c("div", { staticClass: "col-6 mb-5" }, [
-        _c("h4", { staticClass: "card-title" }, [
-          _vm._v(_vm._s(_vm.article.title))
-        ]),
+        _c(
+          "h4",
+          { staticClass: "card-title", staticStyle: { "font-weight": "bold" } },
+          [_vm._v(_vm._s(_vm.article.title))]
+        ),
         _vm._v(" "),
         _c(
           "div",
@@ -50286,7 +50304,8 @@ exports.default = _default;
                 expression: "2",
                 arg: "20"
               }
-            ]
+            ],
+            staticClass: "mb-3"
           },
           [
             _c("p", {
@@ -50297,11 +50316,13 @@ exports.default = _default;
           ]
         ),
         _vm._v(" "),
-        _c("p", { staticStyle: { "font-size": "14px" } }, [
-          _vm._v("Author : " + _vm._s(_vm.article.UserId.username))
-        ]),
-        _vm._v(" "),
         _c("p", { staticClass: "card-text" }, [
+          _c("small", [
+            _vm._v("Author : " + _vm._s(_vm.article.UserId.username))
+          ]),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
           _c("small", { staticClass: "text-muted" }, [
             _vm._v(
               _vm._s(
@@ -50318,36 +50339,52 @@ exports.default = _default;
         _vm._v(" "),
         _c(
           "div",
-          {
-            staticStyle: { display: "flex", "justify-content": "space-around" }
-          },
-          [
-            _c("p", [_vm._v("tags : ")]),
-            _vm._v(" "),
-            _vm._l(_vm.article.tags, function(tag, i) {
-              return _c(
-                "a",
-                {
-                  key: i,
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      return _vm.searchByTag(tag)
-                    }
+          { staticClass: "mb-2", staticStyle: { display: "flex" } },
+          _vm._l(_vm.article.tags, function(tag, i) {
+            return _c(
+              "a",
+              {
+                key: i,
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    return _vm.searchByTag(tag)
                   }
-                },
-                [_c("vs-chip", [_vm._v(_vm._s(tag))])],
-                1
-              )
-            })
-          ],
-          2
+                }
+              },
+              [
+                _c(
+                  "vs-chip",
+                  {
+                    staticStyle: {
+                      "font-weight": "bold",
+                      "background-color": "rgb(34, 4, 65)",
+                      color: "rgb(255,255,255)"
+                    }
+                  },
+                  [_vm._v(_vm._s(tag))]
+                )
+              ],
+              1
+            )
+          }),
+          0
         ),
+        _vm._v(" "),
+        _c("div", { staticStyle: { display: "flex" } }, [
+          _c("i", { staticClass: "material-icons md-size-0.5" }, [
+            _vm._v("remove_red_eye")
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "ml-2" }, [
+            _vm._v("  " + _vm._s(_vm.article.views))
+          ])
+        ]),
         _vm._v(" "),
         _c(
           "button",
           {
-            staticClass: "btn btn-secondary btn-sm",
+            staticClass: "btn btn-dark btn-sm",
             on: {
               click: function($event) {
                 return _vm.detailedArticle(_vm.article)
@@ -50361,7 +50398,7 @@ exports.default = _default;
           ? _c(
               "button",
               {
-                staticClass: "btn btn-secondary btn-sm",
+                staticClass: "btn btn-dark btn-sm",
                 on: {
                   click: function($event) {
                     return _vm.editArticle(_vm.article)
@@ -50376,7 +50413,7 @@ exports.default = _default;
           ? _c(
               "button",
               {
-                staticClass: "btn btn-secondary btn-sm",
+                staticClass: "btn btn-dark btn-sm",
                 on: {
                   click: function($event) {
                     return _vm.removeArticle(_vm.article._id)
@@ -50580,14 +50617,11 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
 var _default = {
   props: {
     message: String,
-    isLogin: Boolean
+    isLogin: Boolean,
+    currentUser: Object
   },
   data: function data() {
     return {
@@ -50599,8 +50633,7 @@ var _default = {
       this.$emit("fromChildren", 1);
     },
     logOut: function logOut() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("author");
+      localStorage.clear();
       this.$emit("fromLogOutButton");
     },
     showUserArticle: function showUserArticle() {
@@ -50642,7 +50675,14 @@ exports.default = _default;
     [
       _c(
         "b-navbar",
-        { attrs: { type: "dark", variant: "dark", toggleable: "lg" } },
+        {
+          staticStyle: {
+            "font-weight": "bold",
+            "background-color": "rgb(34, 4, 65)",
+            color: "rgb(255, 255, 255)"
+          },
+          attrs: { type: "dark", toggleable: "lg" }
+        },
         [
           _c(
             "b-navbar-brand",
@@ -50663,34 +50703,34 @@ exports.default = _default;
             "b-collapse",
             { attrs: { id: "nav-collapse", "is-nav": "" } },
             [
+              _c(
+                "b-nav-form",
+                { staticClass: "mx-auto" },
+                [
+                  _c("b-form-input", {
+                    staticStyle: { width: "300px" },
+                    attrs: { size: "sm", placeholder: "Search By Title" },
+                    model: {
+                      value: _vm.search,
+                      callback: function($$v) {
+                        _vm.search = $$v
+                      },
+                      expression: "search"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
               _vm.isLogin
                 ? _c(
                     "b-navbar-nav",
                     { staticClass: "ml-auto" },
                     [
                       _c(
-                        "b-nav-form",
-                        { staticClass: "ml-auto" },
-                        [
-                          _c("b-form-input", {
-                            staticClass: "mr-sm-2",
-                            attrs: { size: "sm", placeholder: "Search" },
-                            model: {
-                              value: _vm.search,
-                              callback: function($$v) {
-                                _vm.search = $$v
-                              },
-                              expression: "search"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
                         "b-nav-item-dropdown",
                         {
-                          staticClass: "font-weight-bold",
+                          staticStyle: { color: "rgb(255, 255, 255)" },
                           attrs: { text: "Article", right: "" }
                         },
                         [
@@ -50740,34 +50780,16 @@ exports.default = _default;
                       ),
                       _vm._v(" "),
                       _c(
-                        "b-nav-item-dropdown",
-                        { attrs: { right: "" } },
-                        [
-                          _c("template", { slot: "button-content" }, [
-                            _c("em", { staticClass: "font-weight-bold" }, [
-                              _vm._v("User")
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("b-dropdown-item", { attrs: { href: "#" } }, [
-                            _vm._v("Profile")
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "b-dropdown-item",
-                            {
-                              attrs: { href: "#" },
-                              on: {
-                                click: function($event) {
-                                  $event.preventDefault()
-                                  return _vm.logOut($event)
-                                }
-                              }
-                            },
-                            [_vm._v("Sign Out")]
-                          )
-                        ],
-                        2
+                        "b-nav-item",
+                        {
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.logOut($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Sign Out")]
                       )
                     ],
                     1
@@ -50873,6 +50895,8 @@ exports.default = _default;
 var define;
 'use strict';var _typeof='function'==typeof Symbol&&'symbol'==typeof Symbol.iterator?function(obj){return typeof obj}:function(obj){return obj&&'function'==typeof Symbol&&obj.constructor===Symbol&&obj!==Symbol.prototype?'symbol':typeof obj};(function(){function a(c){'undefined'!=typeof console&&console.error('[g-signin-button] '+c)}function b(c){c.component('g-signin-button',{name:'g-signin-button',render:function render(d){return d('div',{attrs:{class:'g-signin-button'},ref:'signinBtn'},this.$slots.default)},props:{params:{type:Object,required:!0,default:function _default(){return{}}}},mounted:function mounted(){var _this=this;return window.gapi?this.params.client_id?void window.gapi.load('auth2',function(){var d=window.gapi.auth2.init(_this.params);d.attachClickHandler(_this.$refs.signinBtn,{},function(e){_this.$emit('success',e)},function(e){_this.$emit('error',e),_this.$emit('failure',e)})}):void a('params.client_id must be specified.'):void a('"https://apis.google.com/js/api:client.js" needs to be included as a <script>.')}})}'object'==('undefined'==typeof exports?'undefined':_typeof(exports))?module.exports=b:'function'==typeof define&&define.amd?define([],function(){return b}):window.Vue&&window.Vue.use(b)})();
 
+},{}],"img/logo.png":[function(require,module,exports) {
+module.exports = "/logo.cecc779a.png";
 },{}],"src/components/login.vue":[function(require,module,exports) {
 "use strict";
 
@@ -50887,8 +50911,12 @@ var _vueGoogleSigninButtonDirective = _interopRequireDefault(require("vue-google
 
 var _vueGoogleSigninButton = _interopRequireDefault(require("vue-google-signin-button"));
 
+var _logo = _interopRequireDefault(require("../../img/logo.png"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//
+//
 //
 //
 //
@@ -50940,6 +50968,7 @@ var _default = {
   },
   data: function data() {
     return {
+      image: _logo.default,
       clientId: "323874734298-vrlavakg3iqb6ig2qbp22c7ijisk1pd9.apps.googleusercontent.com",
       googleSignInParams: {
         clientId: "323874734298-vrlavakg3iqb6ig2qbp22c7ijisk1pd9.apps.googleusercontent.com"
@@ -50963,8 +50992,10 @@ var _default = {
           idToken: idToken
         }
       }).then(function (response) {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("author", response.data.author);
+        localStorage.setItem("token", response.data.token); // localStorage.setItem("author", response.data.author);
+
+        localStorage.setItem("currentUser", response.data.currentUser);
+        var currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
         _this.$emit("fromLoginFormLoginCond", true);
       }).catch(function (err) {
@@ -50993,12 +51024,16 @@ var _default = {
           title: 'Login success !',
           showConfirmButton: false,
           timer: 1500
-        });
-        console.log(response.data);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("author", response.data.author);
+        }); // console.log(response.data);
+        // console.log(JSON.parse(response.data.currentUser).username)
 
-        _this2.$emit("fromLoginFormLoginCond", true);
+        localStorage.setItem("currentUser", response.data.currentUser);
+        localStorage.setItem("token", response.data.token);
+        var currentUser = JSON.parse(localStorage.getItem("currentUser")); // console.log(currentUser)
+        // console.log(currentUser.username)
+        // localStorage.setItem("author", response.data.author);
+
+        _this2.$emit("fromLoginFormLoginCond", true, currentUser);
       }).catch(function (err) {
         var message = err.response.data.message;
         Swal.fire({
@@ -51041,6 +51076,8 @@ exports.default = _default;
       attrs: { id: "formLogin" }
     },
     [
+      _c("div", { staticStyle: { display: "flex" } }),
+      _vm._v(" "),
       _c("h2", { staticClass: "text-center" }, [_vm._v("Sign In")]),
       _vm._v(" "),
       _c(
@@ -51112,7 +51149,8 @@ exports.default = _default;
               {
                 staticClass: "btn btn-default",
                 staticStyle: {
-                  "background-color": "#0f0e0ec5",
+                  "font-weight": "bold",
+                  "background-color": "rgb(34, 4, 65)",
                   color: "rgb(255, 255, 255)"
                 },
                 attrs: { type: "submit" }
@@ -51126,7 +51164,7 @@ exports.default = _default;
       _vm._v(" "),
       _c("hr"),
       _vm._v(" "),
-      _c("div", [
+      _c("div", { staticClass: "text-center" }, [
         _c(
           "button",
           {
@@ -51138,9 +51176,10 @@ exports.default = _default;
                 expression: "clientId"
               }
             ],
-            staticClass: "google-signin-button"
+            staticClass: "google-signin-button",
+            staticStyle: { "font-weight": "bold" }
           },
-          [_vm._v(" Continue with Google")]
+          [_vm._v("Continue with Google")]
         )
       ]),
       _vm._v(" "),
@@ -51204,7 +51243,7 @@ render._withStripped = true
       
       }
     })();
-},{"axios":"node_modules/axios/index.js","vue-google-signin-button-directive":"node_modules/vue-google-signin-button-directive/index.js","vue-google-signin-button":"node_modules/vue-google-signin-button/dist/vue-google-signin-button.min.js","_css_loader":"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/register.vue":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js","vue-google-signin-button-directive":"node_modules/vue-google-signin-button-directive/index.js","vue-google-signin-button":"node_modules/vue-google-signin-button/dist/vue-google-signin-button.min.js","../../img/logo.png":"img/logo.png","_css_loader":"../../../../../../../../usr/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/register.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -51407,7 +51446,8 @@ exports.default = _default;
               {
                 staticClass: "btn btn-default",
                 staticStyle: {
-                  "background-color": "#0f0e0ec5",
+                  "font-weight": "bold",
+                  "background-color": "rgb(34, 4, 65)",
                   color: "rgb(255, 255, 255)"
                 },
                 attrs: { type: "submit" }
@@ -51743,7 +51783,7 @@ exports.default = _default;
                   _vm._v(" "),
                   _c(
                     "b-button",
-                    { attrs: { type: "submit", variant: "primary" } },
+                    { attrs: { type: "submit", variant: "dark" } },
                     [_vm._v("Submit")]
                   )
                 ],
@@ -51808,6 +51848,10 @@ exports.default = void 0;
 //
 //
 //
+//
+//
+//
+//
 var _default = {
   props: {
     articleDetailObj: Object
@@ -51831,9 +51875,26 @@ exports.default = _default;
       "div",
       { staticStyle: { display: "flex", "justify-content": "center" } },
       [
-        _c("h2", { staticClass: "mt-3 mb-4" }, [
+        _c("h2", { staticClass: "mt-3 mb-2" }, [
           _vm._v(_vm._s(_vm.articleDetailObj.title))
         ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "p-4 mb-2",
+        staticStyle: { display: "flex", "flex-direction": "column" }
+      },
+      [
+        _c("img", {
+          staticClass: "mx-auto mb-3",
+          staticStyle: { height: "500px", width: "800px" },
+          attrs: { src: _vm.articleDetailObj.featured_image }
+        }),
+        _vm._v(" "),
+        _c("p", { staticClass: "text-center" }, [_vm._v("deskripsi gambar")])
       ]
     ),
     _vm._v(" "),
@@ -51945,6 +52006,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
 // import Swal from "sweetalert2"
 var _default = {
   components: {
@@ -51970,7 +52032,8 @@ var _default = {
       counter: 0,
       allArticles: [],
       tempArticles: [],
-      isLoginForm: true
+      isLoginForm: true,
+      currentUser: {}
     };
   },
   methods: {
@@ -51982,7 +52045,9 @@ var _default = {
       this.isLoginForm = cond;
     },
     deleteArticle: function deleteArticle(id) {
-      this.getAllArticles();
+      // this.getAllArticles()
+      this.showPageToggle("UserArticle"); // this.isUserArticle()
+      // this.getUserArticles()
     },
     detailedArticle: function detailedArticle(obj) {
       // console.log("masuk ke detail");
@@ -51995,24 +52060,29 @@ var _default = {
       this.showPageToggle("editArticle");
       this.articleToBeEdited = obj; // console.log(obj);
     },
-    loginCondition: function loginCondition(cond) {
+    loginCondition: function loginCondition(cond, currentUser) {
       var token = localStorage.getItem("token");
+      this.currentUser = currentUser;
 
       if (token) {
         this.isLogin = true;
         this.getAllArticles();
       } else {
         if (cond) {
+          this.isUserArticle = false;
           this.isLogin = true;
           this.getAllArticles();
         } else {
           this.isLogin = false;
+          this.allArticles = [];
+          this.isUserArticle = false;
         }
       }
     },
     showPageToggle: function showPageToggle(page) {
       if (page == "UserArticle") {
         // console.log("masuk ke user article")
+        // this.getAllArticles()
         this.isShowArticle = true;
         this.isUserArticle = true;
         this.isCreate = false;
@@ -52049,47 +52119,11 @@ var _default = {
       }
     },
     getUserArticles: function getUserArticles() {
-      var author = localStorage.getItem("author"); // console.log("masuk ke user articles")
-
-      this.allArticles = []; // console.log(this.tempArticles)
-
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.tempArticles[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var article = _step.value;
-
-          if (article.UserId) {
-            if (article.UserId["_id"] == author) {
-              this.allArticles.push(article);
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-    },
-    getAllArticles: function getAllArticles() {
       var _this = this;
 
-      // console.log("masuk ke get all");
-      var token = localStorage.getItem("token"); // console.log(token)
-
+      var token = localStorage.getItem("token");
       (0, _axios.default)({
-        url: "http://localhost:3000/articles",
+        url: "http://localhost:3000/articles/user",
         method: "GET",
         headers: {
           token: token
@@ -52100,10 +52134,47 @@ var _default = {
         _this.tempArticles = response.data;
       }).catch(function (err) {
         console.log(err);
+      }); // console.log("masuk ke user article")
+      // this.getAllArticles()
+      // // console.log(author)
+      // let currentUser = JSON.parse(localStorage.getItem("currentUser"))
+      // // console.log(currentUser.username)
+      // let authorId = currentUser.id;
+      // // console.log("masuk ke user articles")
+      // // this.getAllArticles()
+      // this.allArticles = [];
+      // // console.log(this.tempArticles)
+      // for (let article of this.tempArticles) {
+      //   if (article.UserId) {
+      //     if (article.UserId["_id"] == authorId) {
+      //       this.allArticles.push(article);
+      //     }
+      //   }
+      // }
+    },
+    getAllArticles: function getAllArticles() {
+      var _this2 = this;
+
+      // console.log("masuk ke get all");
+      console.log("masuk ke get all articles");
+      var token = localStorage.getItem("token"); // console.log(token)
+
+      (0, _axios.default)({
+        url: "http://localhost:3000/articles",
+        method: "GET",
+        headers: {
+          token: token
+        }
+      }).then(function (response) {
+        // console.log(response.data);
+        _this2.allArticles = response.data;
+        _this2.tempArticles = response.data;
+      }).catch(function (err) {
+        console.log(err);
       });
     },
     searchByTag: function searchByTag(tag) {
-      var _this2 = this;
+      var _this3 = this;
 
       var token = localStorage.getItem("token");
       (0, _axios.default)({
@@ -52113,7 +52184,7 @@ var _default = {
           token: token
         }
       }).then(function (response) {
-        _this2.allArticles = response.data; // this.tempArticles = response.data
+        _this3.allArticles = response.data; // this.tempArticles = response.data
       }).catch(function (err) {
         console.log(err);
       });
@@ -52131,6 +52202,12 @@ var _default = {
 
     if (localStorage.getItem("token")) {
       this.getAllArticles();
+
+      if (localStorage.getItem("currentUser")) {
+        this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      }
+    } else {
+      this.allArticles = [], this.tempArticles = [];
     }
   }
 };
@@ -52151,7 +52228,11 @@ exports.default = _default;
     "div",
     [
       _c("navbar", {
-        attrs: { isLogin: _vm.isLogin, message: _vm.message },
+        attrs: {
+          isLogin: _vm.isLogin,
+          message: _vm.message,
+          currentUser: _vm.currentUser
+        },
         on: {
           fromLogOutButton: _vm.loginCondition,
           fromChildren: _vm.triggerParent,
@@ -52225,7 +52306,7 @@ render._withStripped = true
             render: render,
             staticRenderFns: staticRenderFns,
             _compiled: true,
-            _scopeId: "data-v-4dc66b",
+            _scopeId: null,
             functional: undefined
           };
         })());
@@ -71216,7 +71297,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44781" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44623" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

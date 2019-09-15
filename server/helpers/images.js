@@ -55,7 +55,7 @@ const sendUploadToGCS = (req, res, next) => {
 async function deleteFile(req,res,next,url) {
 
   // let filename = req.body.link
-  // console.log("masuk ke delete file gcs")
+  console.log("masuk ke delete file gcs")
   let filename = urlToFileName(url)
 
   try {
