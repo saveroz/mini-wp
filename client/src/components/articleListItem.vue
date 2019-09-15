@@ -99,7 +99,7 @@ export default {
       console.log("list item detail");
       let id = obj._id;
       let token = localStorage.getItem("token");
-
+      this.$emit("detailedArticle", obj);
       axios({
         url: `http://localhost:3000/articles/${id}/addView`,
         method: "PATCH",
@@ -107,7 +107,6 @@ export default {
       })
         .then(response => {
           console.log(response.data);
-          this.$emit("detailedArticle", obj);
         })
         .catch(err => {
           console.log(err.response.data);

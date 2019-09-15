@@ -50242,11 +50242,10 @@ var _default = {
       this.$emit("editArticle", obj);
     },
     detailedArticle: function detailedArticle(obj) {
-      var _this2 = this;
-
       console.log("list item detail");
       var id = obj._id;
       var token = localStorage.getItem("token");
+      this.$emit("detailedArticle", obj);
       (0, _axios.default)({
         url: "http://localhost:3000/articles/".concat(id, "/addView"),
         method: "PATCH",
@@ -50255,8 +50254,6 @@ var _default = {
         }
       }).then(function (response) {
         console.log(response.data);
-
-        _this2.$emit("detailedArticle", obj);
       }).catch(function (err) {
         console.log(err.response.data);
       }); // console.log(id)
@@ -50703,24 +50700,26 @@ exports.default = _default;
             "b-collapse",
             { attrs: { id: "nav-collapse", "is-nav": "" } },
             [
-              _c(
-                "b-nav-form",
-                { staticClass: "mx-auto" },
-                [
-                  _c("b-form-input", {
-                    staticStyle: { width: "300px" },
-                    attrs: { size: "sm", placeholder: "Search By Title" },
-                    model: {
-                      value: _vm.search,
-                      callback: function($$v) {
-                        _vm.search = $$v
-                      },
-                      expression: "search"
-                    }
-                  })
-                ],
-                1
-              ),
+              _vm.isLogin
+                ? _c(
+                    "b-nav-form",
+                    { staticClass: "mx-auto" },
+                    [
+                      _c("b-form-input", {
+                        staticStyle: { width: "300px" },
+                        attrs: { size: "sm", placeholder: "Search By Title" },
+                        model: {
+                          value: _vm.search,
+                          callback: function($$v) {
+                            _vm.search = $$v
+                          },
+                          expression: "search"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e(),
               _vm._v(" "),
               _vm.isLogin
                 ? _c(
@@ -51035,7 +51034,7 @@ var _default = {
 
         _this2.$emit("fromLoginFormLoginCond", true, currentUser);
       }).catch(function (err) {
-        var message = err.response.data.message;
+        var message = err.response.data.message || "please input valid data";
         Swal.fire({
           type: 'error',
           title: 'Login failed !',
@@ -71297,7 +71296,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44623" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "36627" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

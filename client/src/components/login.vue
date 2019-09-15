@@ -126,7 +126,7 @@ export default {
           this.$emit("fromLoginFormLoginCond", true, currentUser);
         })
         .catch(err => {
-          let message = err.response.data.message;
+          let message = err.response.data.message || "please input valid data";
           Swal.fire({
                     type: 'error',
                     title: 'Login failed !',

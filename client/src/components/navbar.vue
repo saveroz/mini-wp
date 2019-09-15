@@ -6,7 +6,7 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-          <b-nav-form class="mx-auto">
+          <b-nav-form v-if="isLogin" class="mx-auto">
             <b-form-input size="sm" v-model="search" placeholder="Search By Title" style="width:300px"></b-form-input>
           </b-nav-form>
         <b-navbar-nav v-if="isLogin" class="ml-auto">
